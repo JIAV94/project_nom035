@@ -1,0 +1,28 @@
+{% load static %}
+
+{% url 'index_view' as index_url %}
+{% url 'survey:surveys_view' as survey_url %}
+{% url 'user:employees_view' as employee_url %}
+{% url 'survey:policy_view' as policy_url %}
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{% url 'index_view' %}">
+        <img src="{% static 'img/jiav_logo.png' %}" height="30" alt="" loading="lazy">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-link {% if request.path == index_url %} active {% endif %}"
+                href="{% url 'index_view'%}">Home</a>
+            <a class="nav-link {% if request.path == survey_url %} active {% endif %}"
+                href="{% url 'survey:surveys_view' %}">Encuestas</a>
+            <a class="nav-link {% if request.path == employee_url %} active {% endif %}"
+                href="{% url 'user:employees_view' %}">Empleados</a>
+            <a class="nav-link {% if request.path == policy_url %} active {% endif %}"
+                href="{% url 'survey:policy_view' %}">Política</a>
+        </div>
+    </div>
+</nav>
