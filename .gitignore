@@ -133,3 +133,6 @@ migrations/
 
 # VS code settings
 .vscode
+
+/media
+/static
