@@ -1,0 +1,39 @@
+{% if surveys %}
+<div class="card">
+  <div class="card-header">
+    <h3>Encuestas disponibles</h3>
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for survey in surveys %}
+    <li class="list-group-item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="col-9">
+          {{ survey.title }}
+        </div>
+        <div class="col-3 d-flex justify-content-end">
+          <a href="{% url 'survey:respond_survey' survey.id %}" class="btn btn-primary">
+            Iniciar encuesta
+          </a>
+        </div>
+      </div>
+    </li>
+    {% endfor%}
+  </ul>
+</div>
+{% elif user.employee.policy %}
+<div class="card text-center">
+  <div class="card-body">
+    <h5 class="card-title">¡Hola {{user.employee.first_name}}! </h5>
+    <div class="text-left">
+      <p class="card-text">Por el momento no tienes encuestas pendientes.</p>
+      <a href="/logout" class="btn btn-primary">Cerrar sesión</a>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="container shadow mt-5 mb-5">
+  <div class="card text-center border-0">
+    {% include '../_policy_text.html' %}
+  </div>
+</div>
+{% endif %}

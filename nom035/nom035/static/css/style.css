@@ -3,6 +3,10 @@ div.bg-login {
     background-size: cover;
 }
 
+img._404 {
+    max-width: 100%;
+}
+
 footer {
     position: fixed;
     bottom: 0;

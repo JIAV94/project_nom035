@@ -10,5 +10,5 @@ def survey_details_view(request, survey_id):
     return render(request, 'surveys/survey_details.html')
 
 
-def policy_view(request):
-    return render(request, 'surveys/policy.html')
+def start_survey(request):
+    return render(request, 'index_view')

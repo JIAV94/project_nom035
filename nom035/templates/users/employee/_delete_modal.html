@@ -1,0 +1,33 @@
+<div class="modal fade" id="deleteEmployeeModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar Empleado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>
+            ¿Está segur@ que desea eliminar a <strong id="deleteModalName"></strong> de su lista de empleados?
+          </p>
+          <p>
+            Al hacerlo se borrara toda su información y las respuestas registradas de sus encuestas,
+            esto no alterará ni pondrá en riesgo las encuestas de otros empleados.
+          </p>
+        </div>
+        <form id="deleteEmployee" action="{% url 'user:delete_employee' 0 %}" method="POST"
+          onsubmit="deleteEmployeeButton.disabled = true; return true;">
+          {% csrf_token %}
+          <div class="form-group" hidden>
+            <label for="recipient-name" class="col-form-label">Id:</label>
+            <input type="text" class="form-control" name="employee_id" value="{{employee.user.id}}">
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-danger" name="deleteEmployeeButton">Eliminar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

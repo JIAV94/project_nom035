@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Index</h1>
-{% include 'users/company_index.html' %}
+<div class="container-fluid">
+  {% if user.is_admin %}
+  <h1>Go to admin page.</h1>
+  {% elif company %}
+  {% include 'users/company/company_index.html' %}
+  {% elif employee %}
+  {% include 'users/employee/employee_index.html' %}
+  {% endif %}
+</div>
 {% endblock %}

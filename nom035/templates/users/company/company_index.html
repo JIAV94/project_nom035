@@ -1,0 +1,57 @@
+<h1>{{company.social_denomination}}</h1>
+{% if surveys %}
+<!-- Resumen de Resultados -->
+<div class="card">
+  <h5 class="card-header">Últimos resultados ({{surveys.0.date}})</h5>
+  <div class="card-body">
+    <div class="row">
+      <!-- Resultados cuando hay guia II o II -->
+      {% if surveys.0.guide_number != 1 %}
+      {% include '_summary_II_III.html' %}
+      <!-- Resultados cuando solo hay guia I -->
+      {% else %}
+      {% include '_summary_I.html' %}
+      {% endif %}
+      <!-- Lista Guia I -->
+      <div class="col-12 col-sm-12 col-md-12col-lg-12 col-xl-12">
+        <div class="card">
+          <div class="card-header">
+            Requieren atención clinica:
+          </div>
+          <div class="card-body">
+            <ul>
+              {% for person in require_clinical_attention %}
+              <li>{{person.employee.user.first_name}} {{person.employee.user.last_name}}
+                ({{person.employee.user.username}})</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% elif user.company.employees %}
+<div class="card">
+  <h5 class="card-header text-center">¡Bienvenido!</h5>
+  <div class="card-body">
+    <h5 class="card-title">Crea tu primer encuesta.</h5>
+    <p class="card-text">Para iniciar una encuesta puedes acceder desde el menú <a
+        href="{% url 'survey:surveys_view'%}">Encuestas</a>,
+      o dando clic en el siguiente botón. No olvides registrar a tus empleados en el menú <a
+        href="{% url 'user:employees_view'%}">Empleados</a>.</p>
+    <a href="{% url 'survey:start_survey'%}" class="btn btn-success">Iniciar encuesta</a>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <h5 class="card-header text-center">¡Bienvenido!</h5>
+  <div class="card-body">
+    <h5 class="card-title">Registra a tus empleados.</h5>
+    <p class="card-text">Para registrara a tus empleados puedes acceder desde el menú <a
+        href="{% url 'user:employees_view'%}">Empleados</a>,
+      o dando clic en el siguiente botón.<a href="">Empleados</a>.</p>
+    <a href="{% url 'user:employees_view'%}" class="btn btn-success">Iniciar encuesta</a>
+  </div>
+</div>
+{% endif %}
