@@ -1,90 +1,61 @@
-<div class="container">
-  <h4>Titulo de la encuesta</h4>
-  <!-- for section in Survey -->
-  <div class="border bg-white mt-3 rounded shadow-lg">
-    <div class="p-2 bg-light text-justify rounded ">
-      <div>
-        <h5>Texto seccionTexto seccionTexto seccionTexto seccionTexto seccionTexto seccion</h6>
-      </div>
-      <div>
-        <div class="border rounded">
-          <!-- For question in secction-->
-          <div class="bg-white border">
-            <div class="p-1">
-              <h6>Contenido pregunta</h6>
-            </div>
-            <div class="d-flex justify-content-left">
-              <div class="p-2">
-                <input id="1" type="radio" name="question.id" value="0" required>
-                <label class="form-check-label" for="1">
-                  Siempre
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="2" type="radio" name="question.id" value="1" required>
-                <label class="form-check-label" for="2">
-                  Casi siempre
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="3" type="radio" name="question.id" value="2" required>
-                <label class="form-check-label" for="3">
-                  Algunas veces
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="4" type="radio" name="question.id" value="3" required>
-                <label class="form-check-label" for="4">
-                  Casi nunca
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="5" type="radio" name="question.id" value="4" required>
-                <label class="form-check-label" for="5">
-                  Nunca
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="bg-white border">
-            <div class="p-1">
-              <h6>Contenido pregunta</h6>
-            </div>
-            <div class="d-flex justify-content-left">
-              <div class="p-2">
-                <input id="1" type="radio" name="question.id" value="0" required>
-                <label class="form-check-label" for="1">
-                  Siempre
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="2" type="radio" name="question.id" value="1" required>
-                <label class="form-check-label" for="2">
-                  Casi siempre
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="3" type="radio" name="question.id" value="2" required>
-                <label class="form-check-label" for="3">
-                  Algunas veces
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="4" type="radio" name="question.id" value="3" required>
-                <label class="form-check-label" for="4">
-                  Casi nunca
-                </label>
-              </div>
-              <div class="p-2">
-                <input id="5" type="radio" name="question.id" value="4" required>
-                <label class="form-check-label" for="5">
-                  Nunca
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="container border rounded shadow-lg mt-4 mb-4">
+  <div class="mb-3 text-center">
+    <h4 class="mt-4">{{survey.title}}</h4>
+  </div>
+  <form action="{% url 'survey:respond_survey' survey.id %}" method="POST"
+    onsubmit="submitSurveyButton.disabled = true; return true;">
+    {% csrf_token %}
+    {% for section in survey.sections.all %}
+    <div>
+      <div class="p-2 mt-4 bg-dark text-white rounded-top">
+        <h5>{{section.content}}</h5>
       </div>
     </div>
-  </div>
+    <div>
+      {% for question in section.questions.all %}
+      {% if question.number > 0 and question.section.section_type == 0 %}
+      <div class="bg-white border-bottom border-left border-right">
+        <div class="p-1">
+          <h6>{{question.content}}</h6>
+        </div>
+        {% include './_multiple_choice.html' with required="required" %}
+      </div>
+      {% elif question.number == -1 %}
+      <div>
+        <div class="p-2 bg-light border-bottom border-left border-right">
+          <h5>{{question.content}}</h5>
+          {% include './_yes_no.html' with required="required" switch="survey-switch-1" %}
+        </div>
+      </div>
+      {% elif question.number == -2 %}
+      <div>
+        <div class="p-2 bg-light border-bottom border-left border-right">
+          <h5>{{question.content}}</h5>
+          {% include './_yes_no.html' with required="required" switch="survey-switch-2" %}
+        </div>
+      </div>
+      {% elif question.section.section_type == -1 %}
+      <div class="bg-white border-bottom border-left border-right question-hidden" hidden>
+        <div class="p-1">
+          <h6>{{question.content}}</h6>
+        </div>
+        {% include './_multiple_choice.html' %}
+      </div>
+      {% elif question.section.section_type == -2 %}
+      <div class="bg-white border-bottom border-left border-right question-hidden-2" hidden>
+        <div class="p-1">
+          <h6>{{question.content}}</h6>
+        </div>
+        {% include './_multiple_choice.html' %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <div class="row mt-3 text-center">
+      <div class="col">
+        <button type="submit" class="btn btn-primary mb-3" name="submitSurveyButton">Enviar respuestas</button>
+      </div>
+    </div>
 </div>
+</form>

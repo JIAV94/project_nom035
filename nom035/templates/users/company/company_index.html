@@ -1,20 +1,20 @@
 <h1>{{company.social_denomination}}</h1>
 {% if surveys %}
 <!-- Resumen de Resultados -->
-<div class="card">
-  <h5 class="card-header">Últimos resultados ({{surveys.0.date}})</h5>
+<div class="card bg-white border-0">
+  <h5 class="card-header bg-white border-0 text-center">Últimos resultados ({{surveys.0.date}})</h5>
   <div class="card-body">
     <div class="row">
       <!-- Resultados cuando hay guia II o II -->
       {% if surveys.0.guide_number != 1 %}
-      {% include '_summary_II_III.html' %}
+      {% include './_summary_II_III.html' with surveys=surveys %}
       <!-- Resultados cuando solo hay guia I -->
       {% else %}
-      {% include '_summary_I.html' %}
+      {% include './_summary_I.html' with surveys=surveys %}
       {% endif %}
       <!-- Lista Guia I -->
       <div class="col-12 col-sm-12 col-md-12col-lg-12 col-xl-12">
-        <div class="card">
+        <div class="card text-center">
           <div class="card-header">
             Requieren atención clinica:
           </div>
@@ -40,7 +40,7 @@
         href="{% url 'survey:surveys_view'%}">Encuestas</a>,
       o dando clic en el siguiente botón. No olvides registrar a tus empleados en el menú <a
         href="{% url 'user:employees_view'%}">Empleados</a>.</p>
-    <a href="{% url 'survey:start_survey'%}" class="btn btn-success">Iniciar encuesta</a>
+    <a href="{% url 'survey:create_survey'%}" class="btn btn-success">Iniciar encuesta</a>
   </div>
 </div>
 {% else %}

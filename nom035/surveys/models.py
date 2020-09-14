@@ -4,10 +4,10 @@ from users.models import Employee, Company, InformationLog
 
 class Survey(models.Model):
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="surveys", default=1)
+        Company, on_delete=models.CASCADE, related_name="surveys")
     title = models.CharField(max_length=150)
     responsible = models.CharField(max_length=70)
-    responsible_id = models.IntegerField(blank=True)
+    responsible_id = models.IntegerField()
     conclusions = models.TextField(default='')
     method = models.CharField(max_length=30, default='')
     objective = models.TextField(default='')
@@ -24,6 +24,7 @@ class Section(models.Model):
     survey = models.ForeignKey(
         'Survey', on_delete=models.CASCADE, related_name='sections')
     content = models.CharField(max_length=200, default='')
+    section_type = models.IntegerField()
 
     def __str__(self):
         return f"{self.survey.guide_number} - {self.content}"

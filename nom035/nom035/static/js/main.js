@@ -80,4 +80,30 @@ $(document).ready(function () {
     $('#deleteModalName').replaceWith("<strong>" + employee_name + "</strong>");
     $('#deleteEmployeeModal').modal('show');
   });
+
+  // Oculta las preguntas de las encuestas dependiendo la respuesta
+  $('#survey-switch-1 :input').change(function () {
+    if ($('#survey-switch-1 > div > input').first().is(':checked')) {
+      $('.section-hidden').attr('hidden', false)
+      $('.question-hidden').attr('hidden', false)
+      $('.question-hidden :input').attr('required', true)
+    }
+    else {
+      $('.section-hidden').attr('hidden', true)
+      $('.question-hidden').attr('hidden', true)
+      $('.question-hidden :input').attr('required', false)
+    }
+  });
+
+  // Oculta las preguntas de las encuestas dependiendo la respuesta
+  $('#survey-switch-2 :input').change(function () {
+    if ($('#survey-switch-2 > div > input').first().is(':checked')) {
+      $('.question-hidden-2').attr('hidden', false)
+      $('.question-hidden-2 :input').attr('required', true)
+    }
+    else {
+      $('.question-hidden-2').attr('hidden', true)
+      $('.question-hidden-2 :input').attr('required', false)
+    }
+  });
 });
