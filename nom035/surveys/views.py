@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, JsonResponse
 from users.views import is_company
 from .models import *
 
@@ -73,6 +73,62 @@ def asign_survey(survey, employees):
           employee=employee, information_log=info_log, survey=survey
         )
     return 0
+
+# Finished
+def update_survey(request, survey_id):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            company = is_company(request.user)
+            if company is not None:
+                survey = get_object_or_404(Survey, id=survey_id)
+                if survey.company == company:
+                    responsible = request.POST["responsible"]
+                    responsible_id = request.POST["responsible_id"]
+                    main_activities = request.POST["main_activities"]
+                    conclusions = ""
+                    method = ""
+                    objective = ""
+                    recommendations = ""
+                    if conclusions in request.POST:
+                        conclusions = request.POST["conclusions"]
+                    if method in request.POST:
+                        method = request.POST["method"]
+                    if objective in request.POST:
+                        objective = request.POST["objective"]
+                    if recommendations in request.POST:
+                        recommendations = request.POST["recommendations"]
+                    survey.responsible = responsible
+                    survey.responsible_id = responsible_id
+                    survey.main_activities = main_activities
+                    survey.conclusions = conclusions
+                    survey.method = method
+                    survey.objective = objective
+                    survey.recommendations = recommendations
+                    survey.save()
+                    return redirect('survey:surveys_view')
+            return redirect(_404(request, 'Page not found', '404.html'))
+        return redirect('survey:surveys_view')
+    return redirect('login_view')
+
+# Finished
+def load_survey_data(request, survey_id):
+    if request.user.is_authenticated:
+        company = is_company(request.user)
+        if company is not None:
+            survey = get_object_or_404(Survey, id=survey_id)
+            if survey.company == company:
+                survey = [{
+                  "responsible":survey.responsible, 
+                  "responsible_id":survey.responsible_id,
+                  "conclusions":survey.conclusions,
+                  "method":survey.method,
+                  "objective":survey.objective,
+                  "recommendations":survey.recommendations,
+                  "main_activities":survey.main_activities
+                }]
+                return JsonResponse(survey, content_type='application/json', safe=False)
+        return redirect(_404(request, 'Page not found', '404.html'))
+    return redirect('login_view')
 
 
 def respond_survey(request, survey_id):

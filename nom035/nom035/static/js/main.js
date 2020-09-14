@@ -81,6 +81,39 @@ $(document).ready(function () {
     $('#deleteEmployeeModal').modal('show');
   });
 
+  // Fill Update survey modal
+  $('.ed-surv').click(function () {
+    survey_id = $(this).data('surveyId');
+    action_url = $('#updateSurvey').attr('action')
+    action_url = action_url.substring(0, action_url.lastIndexOf("/")) + '/' + survey_id;
+    $('#updateSurvey').attr('action', action_url)
+    $('#updateSurveyModal').modal('show');
+    $.ajax({
+      type: 'GET',
+      url: '/surveys/retrieve/' + survey_id,
+      success: function (survey_data) {
+        $('#update_responsible').val(survey_data[0].responsible);
+        $('#update_responsible_id').val(survey_data[0].responsible_id);
+        $('#update_conclusions').val(survey_data[0].conclusions);
+        $('#update_method').val(survey_data[0].method);
+        $('#update_objective').val(survey_data[0].objective);
+        $('#update_recommendations').val(survey_data[0].recommendations);
+        $('#update_main_activities').val(survey_data[0].main_activities);
+      }
+    })
+  });
+
+  // Delete survey
+  $('.del-surv').click(function () {
+    survey_id = $(this).data('surveyId');
+    survey_title = $(this).data('surveyTitle');
+    action_url = $('#deleteSurvey').attr('action')
+    action_url = action_url.substring(0, action_url.lastIndexOf("/")) + '/' + survey_id;
+    $('#deleteSurvey').attr('action', action_url);
+    $('#deleteModalTitle').replaceWith("<strong>" + survey_title + "</strong>");
+    $('#deleteSurveyModal').modal('show');
+  });
+
   // Oculta las preguntas de las encuestas dependiendo la respuesta
   $('#survey-switch-1 :input').change(function () {
     if ($('#survey-switch-1 > div > input').first().is(':checked')) {
