@@ -1,0 +1,14 @@
+<div id="{{switch}}" class="d-flex justify-content-start">
+  <div class="p-2">
+    <input id="yes-{{question.id}}" type="radio" name="{{question.id}}" value="1" {{required}}>
+    <label class="form-check-label" for="yes-{{question.id}}">
+      Si
+    </label>
+  </div>
+  <div class="p-2">
+    <input id="no-{{question.id}}" type="radio" name="{{question.id}}" value="0" {{required}}>
+    <label class="form-check-label" for="no-{{question.id}}">
+      No
+    </label>
+  </div>
+</div>

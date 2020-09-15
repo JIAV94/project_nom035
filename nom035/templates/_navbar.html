@@ -3,26 +3,35 @@
 {% url 'index_view' as index_url %}
 {% url 'survey:surveys_view' as survey_url %}
 {% url 'user:employees_view' as employee_url %}
-{% url 'survey:policy_view' as policy_url %}
+{% url 'user:policy_view' as policy_url %}
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{% url 'index_view' %}">
-        <img src="{% static 'img/jiav_logo.png' %}" height="30" alt="" loading="lazy">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-            <a class="nav-link {% if request.path == index_url %} active {% endif %}"
-                href="{% url 'index_view'%}">Home</a>
-            <a class="nav-link {% if request.path == survey_url %} active {% endif %}"
-                href="{% url 'survey:surveys_view' %}">Encuestas</a>
-            <a class="nav-link {% if request.path == employee_url %} active {% endif %}"
-                href="{% url 'user:employees_view' %}">Empleados</a>
-            <a class="nav-link {% if request.path == policy_url %} active {% endif %}"
-                href="{% url 'survey:policy_view' %}">Política</a>
-        </div>
+  <a class="navbar-brand" href="{% url 'index_view' %}">
+    <img src="{% static 'img/jiav_logo.png' %}" height="30" alt="" loading="lazy">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+    aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-link {% if request.path == index_url %} active {% endif %}" href="{% url 'index_view'%}">Home</a>
+      {% if user.company %}
+      <a class="nav-link {% if request.path == survey_url %} active {% endif %}"
+        href="{% url 'survey:surveys_view' %}">Encuestas</a>
+      <a class="nav-link {% if request.path == employee_url %} active {% endif %}"
+        href="{% url 'user:employees_view' %}">Empleados</a>
+      {% endif %}
+      <a class="nav-link {% if request.path == policy_url %} active {% endif %}"
+        href="{% url 'user:policy_view' %}">Política</a>
+      <a class="nav-link mr-3" href="{% url 'user_logout' %}">
+        Logout
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-door-open-fill" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M1.5 15a.5.5 0 0 0 0 1h13a.5.5 0 0 0 0-1H13V2.5A1.5 1.5 0 0 0 11.5 1H11V.5a.5.5 0 0 0-.57-.495l-7 1A.5.5 0 0 0 3 1.5V15H1.5zM11 2v13h1V2.5a.5.5 0 0 0-.5-.5H11zm-2.5 8c-.276 0-.5-.448-.5-1s.224-1 .5-1 .5.448.5 1-.224 1-.5 1z" />
+        </svg>
+      </a>
     </div>
+  </div>
 </nav>

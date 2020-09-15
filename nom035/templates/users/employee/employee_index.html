@@ -1,0 +1,50 @@
+{% if surveys %}
+<div class="card">
+  <div class="card-header">
+    <h3>Encuestas disponibles</h3>
+  </div>
+  <ul class="list-group list-group-flush">
+    {% for survey in surveys %}
+    <li class="list-group-item">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="col-9">
+          {{ survey.title }}
+        </div>
+        <div class="col-3 d-flex justify-content-end">
+          <a href="{% url 'survey:respond_survey' survey.id %}" class="btn btn-outline-success rounded-pill">
+            Responder encuesta
+            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-text-fill" fill="currentColor"
+              xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd"
+                d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zM5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1H5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+    </li>
+    {% endfor%}
+  </ul>
+</div>
+{% elif user.employee.policy %}
+<div class="container mt-5 mb-5 align-center">
+  <div class="card col-12 col-md-6 offset-md-3 text-center shadow-lg">
+    <div class="card-body">
+      <h5 class="card-title">¡Hola {{user.employee.first_name}}! </h5>
+      <div class="text-center">
+        <p class="card-text">Por el momento no tienes encuestas pendientes.</p>
+        <div class="row">
+          <div class="col text-center">
+            <a href="/logout" class="btn btn-primary">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="container shadow mt-5 mb-5">
+  <div class="card text-center border-0">
+    {% include '../_policy_text.html' %}
+  </div>
+</div>
+{% endif %}

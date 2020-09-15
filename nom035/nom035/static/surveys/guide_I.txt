@@ -1,0 +1,21 @@
+Type|QuestionNum|Content|QuestionInverted
+1|NA|Cuestionario para identificar a los trabajadores que fueron sujetos a acontecimientos traumáticos severos
+Section|-1|I.- Acontecimiento traumático severo
+Question|1|¿Ha presenciado o sufrido alguna vez, durante o con motivo del trabajo un acontecimiento como los siguientes:|True|
+Section|0|II.- Recuerdos persistentes sobre el acontecimiento (durante el último mes):
+Question|2|¿Ha tenido recuerdos recurrentes sobre el acontecimiento que le provocan malestares?|True|
+Question|3|¿Ha tenido sueños de carácter recurrente sobre el acontecimiento, que le producen malestar?|True|
+Section|0|III.- Esfuerzo por evitar circunstancias parecidas o asociadas al acontecimiento (durante el último mes):
+Question|4|¿Se ha esforzado por evitar todo tipo de sentimientos, conversaciones o situaciones que le puedan recordar el acontecimiento?|True|
+Question|5|¿Se ha esforzado por evitar todo tipo de actividades, lugares o personas que motivan recuerdos del acontecimiento?|True|
+Question|6|¿Ha tenido dificultad para recordar alguna parte importante del evento?|True|
+Question|7|¿Ha disminuido su interés en sus actividades cotidianas?|True|
+Question|8|¿Se ha sentido usted alejado o distante de los demás?|True|
+Question|9|¿Ha notado que tiene dificultad para expresar sus sentimientos?|True|
+Question|10|¿Ha tenido la impresión de que su vida se va a acortar, que va a morir antes que otras personas o que tiene un futuro limitado?|True|
+Section|0|IV Afectación (durante el último mes):
+Question|11|¿Ha tenido usted dificultades para dormir?|True|
+Question|12|¿Ha estado particularmente irritable o le han dado arranques de coraje?|True|
+Question|13|¿Ha tenido dificultad para concentrarse?|True|
+Question|14|¿Ha estado nervioso o constantemente en alerta?|True|
+Question|15|¿Se ha sobresaltado fácilmente por cualquier cosa?|True|

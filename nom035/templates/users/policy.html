@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container shadow mt-5 mb-5">
+  <div class="card text-center border-0">
+    <!-- Alerts -->
+    {% include '_alerts.html' %}
+    {% include './_policy_text.html' %}
+  </div>
+</div>
+{% endblock %}

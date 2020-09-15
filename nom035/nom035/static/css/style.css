@@ -3,10 +3,8 @@ div.bg-login {
     background-size: cover;
 }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
+img._404 {
+    max-width: 100%;
 }
 
 .bg-login-form {

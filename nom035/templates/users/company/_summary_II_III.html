@@ -1,0 +1,111 @@
+<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+  <div class="card mb-4 shadow-lg">
+    <div class="card-header d-flex justify-content-center">
+      Gráfica de Resultados
+    </div>
+    <div class="row">
+      <!-- Grafica -->
+      <div class="col col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5">
+        <div class="card-body">
+          <canvas id="guide_II_III_chart" height=400% data-graph-nulo={{graph_data.0}} data-graph-bajo={{graph_data.1}}
+            data-graph-medio={{graph_data.2}} data-graph-alto={{graph_data.3}}
+            data-graph-muy-alto={{graph_data.4}}></canvas>
+        </div>
+      </div>
+      <!-- Tabla -->
+      <div class="col d-none d-sm-inline col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7">
+        <div class="card-body">
+          <table class="table table-dark">
+            <thead>
+              <tr class="d-flex">
+                <th class="col-3 text-center align-self-center border-0">Nivel de Riesgo
+                </th>
+                <th class="col-7 text-center align-self-center border-0">Necesidad de Accíon
+                </th>
+                <th class="col-2 text-center align-self-center border-0">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="d-flex" style="background-color:#E84258;">
+                <td class="col-3 text-center align-self-center border-0">Muy Alto</td>
+                <td class="col-7 bg-dark">
+                  Se requiere realizar el análisis de cada categoría y dominio para
+                  establecer las
+                  acciones de intervención apropiadas, mediante un Programa de
+                  intervención que deberá
+                  incluir evaluaciones específicas1, y contemplar campañas de
+                  sensibilización, revisar
+                  la política de prevención de riesgos psicosociales y programas para la
+                  prevención de
+                  los factores de riesgo psicosocial, la promoción de un entorno
+                  organizacional favorable
+                  y la prevención de la violencia laboral, así como reforzar su aplicación
+                  y difusión.
+                </td>
+                <td class="col-2 text-center align-self-center border-0">{{graph_data.4}}
+                </td>
+              </tr>
+              <tr class="d-flex" style="background-color:#FD8060;">
+                <td class="col-3 text-center align-self-center border-0">Alto</td>
+                <td class="col-7 bg-dark">
+                  Se requiere realizar un análisis de cada categoría y dominio, de manera
+                  que se puedan
+                  determinar las acciones de intervención apropiadas a través de un
+                  Programa de
+                  intervención, que podrá incluir una evaluación específica1 y deberá
+                  incluir una
+                  campaña de sensibilización, revisar la política de prevención de riesgos
+                  psicosociales
+                  y programas para la prevención de los factores de riesgo psicosocial, la
+                  promoción de
+                  un entorno organizacional favorable y la prevención de la violencia
+                  laboral, así como
+                  reforzar su aplicación y difusión.
+                </td>
+                <td class="col-2 text-center align-self-center border-0">{{graph_data.3}}
+                </td>
+              </tr>
+              <tr class="d-flex" style="background-color:#FEE191;">
+                <td class="col-3 text-dark text-center align-self-center border-0">Medio
+                </td>
+                <td class="col-7 bg-dark">
+                  Se requiere revisar la política de prevención de riesgos psicosociales y
+                  programas
+                  para la prevención de los factores de riesgo psicosocial, la promoción
+                  de un
+                  entorno organizacional favorable y la prevención de la violencia
+                  laboral, así como
+                  reforzar su aplicación y difusión, mediante un Programa de intervención.
+                </td>
+                <td class="col-2 text-dark text-center align-self-center border-0">
+                  {{graph_data.2}}</td>
+              </tr>
+              <tr class="d-flex" style="background-color:#B0D8A4;">
+                <td class="col-3 text-center align-self-center border-0">Bajo</td>
+                <td class="col-7 bg-dark">
+                  Es necesario una mayor difusión de la política de prevención de riesgos
+                  psicosociales
+                  y programas para: la prevención de los factores de riesgo psicosocial,
+                  la promoción
+                  de un entorno organizacional favorable y la prevención de la violencia
+                  laboral.
+                </td>
+                <td class="col-2 text-center align-self-center border-0">{{graph_data.1}}
+                </td>
+              </tr>
+              <tr class="d-flex" style="background-color:#58A1D9;">
+                <td class="col-3 text-center align-self-center border-0">Nulo</td>
+                <td class="col-7 bg-dark">
+                  El riesgo resulta despreciable por lo que no se requiere medidas
+                  adicionales.
+                </td>
+                <td class="col-2 text-center align-self-center border-0">{{graph_data.0}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

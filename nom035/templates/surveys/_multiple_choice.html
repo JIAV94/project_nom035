@@ -1,0 +1,45 @@
+<div id="{{switch}}" class="d-flex justify-content-left">
+  {% if question.inverted %}
+  <div class="p-2">
+    <input id="1-{{question.id}}" type="radio" name="{{question.id}}" value="4" {{required}}>
+    <label class="form-check-label" for="1-{{question.id}}">Siempre</label>
+  </div>
+  <div class="p-2">
+    <input id="2-{{question.id}}" type="radio" name="{{question.id}}" value="3" {{required}}>
+    <label class="form-check-label" for="2-{{question.id}}">Casi siempre</label>
+  </div>
+  <div class="p-2">
+    <input id="3-{{question.id}}" type="radio" name="{{question.id}}" value="2" {{required}}>
+    <label class="form-check-label" for="3-{{question.id}}">Algunas veces</label>
+  </div>
+  <div class="p-2">
+    <input id="4-{{question.id}}" type="radio" name="{{question.id}}" value="1" {{required}}>
+    <label class="form-check-label" for="4-{{question.id}}">Casi nunca</label>
+  </div>
+  <div class="p-2">
+    <input id="5-{{question.id}}" type="radio" name="{{question.id}}" value="0" {{required}}>
+    <label class="form-check-label" for="5-{{question.id}}">Nunca</label>
+  </div>
+  {% else %}
+  <div class="p-2">
+    <input id="1-{{question.id}}" type="radio" name="{{question.id}}" value="0" {{required}}>
+    <label class="form-check-label" for="1-{{question.id}}">Siempre</label>
+  </div>
+  <div class="p-2">
+    <input id="2-{{question.id}}" type="radio" name="{{question.id}}" value="1" {{required}}>
+    <label class="form-check-label" for="2-{{question.id}}">Casi siempre</label>
+  </div>
+  <div class="p-2">
+    <input id="3-{{question.id}}" type="radio" name="{{question.id}}" value="2" {{required}}>
+    <label class="form-check-label" for="3-{{question.id}}">Algunas veces</label>
+  </div>
+  <div class="p-2">
+    <input id="4-{{question.id}}" type="radio" name="{{question.id}}" value="3" {{required}}>
+    <label class="form-check-label" for="4-{{question.id}}">Casi nunca</label>
+  </div>
+  <div class="p-2">
+    <input id="5-{{question.id}}" type="radio" name="{{question.id}}" value="4" {{required}}>
+    <label class="form-check-label" for="5-{{question.id}}">Nunca</label>
+  </div>
+  {% endif %}
+</div>

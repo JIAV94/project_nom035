@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="col-12">
+    <div class="card mb-4 shadow-lg">
+      <div class="card-header d-flex justify-content-center">
+        Gráfica de Resultados
+      </div>
+      <div class="row">
+        <!-- Grafica -->
+        <div class="col col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div class="card-body">
+            <canvas id="guide_I_chart" height=300% data-graph-no={{graph_data.0}} data-graph-si={{graph_data.1}}>
+            </canvas>
+          </div>
+        </div>
+        <!-- Tabla -->
+        <div class="col col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+          <div class="card-body">
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">Requiere Atención</th>
+                  <th class="text-center" scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="background-color:#E84258;">Si</td>
+                  <td class="text-center">{{graph_data.1}}</td>
+                </tr>
+                <tr>
+                  <td style="background-color:#58A1D9;">No</td>
+                  <td class="text-center">{{graph_data.0}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,61 @@
+<div class="container border rounded shadow-lg mt-4 mb-4">
+  <div class="mb-3 text-center">
+    <h4 class="mt-4">{{survey.title}}</h4>
+  </div>
+  <form action="{% url 'survey:respond_survey' survey.id %}" method="POST"
+    onsubmit="submitSurveyButton.disabled = true; return true;">
+    {% csrf_token %}
+    {% for section in survey.sections.all %}
+    <div>
+      <div class="p-2 mt-4 bg-dark text-white rounded-top">
+        <h5>{{section.content}}</h5>
+      </div>
+    </div>
+    <div>
+      {% for question in section.questions.all %}
+      {% if question.number > 0 and question.section.section_type == 0 %}
+      <div class="bg-white border-bottom border-left border-right">
+        <div class="p-1">
+          <h6>{{question.content}}</h6>
+        </div>
+        {% include './_multiple_choice.html' with required="required" %}
+      </div>
+      {% elif question.number == -1 %}
+      <div>
+        <div class="p-2 bg-light border-bottom border-left border-right">
+          <h5>{{question.content}}</h5>
+          {% include './_yes_no.html' with required="required" switch="survey-switch-1" %}
+        </div>
+      </div>
+      {% elif question.number == -2 %}
+      <div>
+        <div class="p-2 bg-light border-bottom border-left border-right">
+          <h5>{{question.content}}</h5>
+          {% include './_yes_no.html' with required="required" switch="survey-switch-2" %}
+        </div>
+      </div>
+      {% elif question.section.section_type == -1 %}
+      <div class="bg-white border-bottom border-left border-right question-hidden" hidden>
+        <div class="p-1">
+          <h6>{{question.content}}</h6>
+        </div>
+        {% include './_multiple_choice.html' %}
+      </div>
+      {% elif question.section.section_type == -2 %}
+      <div class="bg-white border-bottom border-left border-right question-hidden-2" hidden>
+        <div class="p-1">
+          <h6>{{question.content}}</h6>
+        </div>
+        {% include './_multiple_choice.html' %}
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    {% endfor %}
+    <div class="row mt-3 text-center">
+      <div class="col">
+        <button type="submit" class="btn btn-primary mb-3" name="submitSurveyButton">Enviar respuestas</button>
+      </div>
+    </div>
+</div>
+</form>

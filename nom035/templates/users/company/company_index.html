@@ -1,0 +1,63 @@
+<div class="row mt-3">
+  <div class="col-12 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3">
+    {% include '_alerts.html' %}
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="text-center">
+    <h2>{{company.social_denomination}}</h2>
+    <h5 class="card-header bg-white border-0 text-center text-monospace">Últimos resultados ({{surveys.0.date}})</h5>
+  </div>
+</div>
+{% if surveys %}
+<!-- Resumen de Resultados -->
+<!-- Resultados cuando hay guia II o III -->
+{% if surveys.1.guide_number > 1 %}
+<div class="card-body">
+  <div class="row">
+    {% include './_summary_II_III.html' %}
+  </div>
+</div>
+
+<!-- Resultados cuando solo hay guia I -->
+{% else %}
+{% include './_summary_I.html' %}
+{% endif %}
+<!-- Lista Guia I -->
+<div class="container">
+  <div class="card text-center">
+    <div class="card-header">
+      Requieren atención clínica:
+    </div>
+    <div class="card-body">
+      {% for answer_sheet in require_clinical_attention %}
+      {{answer_sheet.employee.user.first_name}} {{answer_sheet.employee.user.last_name}}
+      ({{answer_sheet.employee.user.username}})
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% elif user.company.employees %}
+<div class="card">
+  <h5 class="card-header text-center">¡Bienvenido!</h5>
+  <div class="card-body">
+    <h5 class="card-title">Crea tu primer encuesta.</h5>
+    <p class="card-text">Para iniciar una encuesta puedes acceder desde el menú <a
+        href="{% url 'survey:surveys_view'%}">Encuestas</a>,
+      o dando clic en el siguiente botón. No olvides registrar a tus empleados en el menú <a
+        href="{% url 'user:employees_view'%}">Empleados</a>.</p>
+    <a href="{% url 'survey:create_survey'%}" class="btn btn-success">Iniciar encuesta</a>
+  </div>
+</div>
+{% else %}
+<div class="card">
+  <h5 class="card-header text-center">¡Bienvenido!</h5>
+  <div class="card-body">
+    <h5 class="card-title">Registra a tus empleados.</h5>
+    <p class="card-text">Para registrara a tus empleados puedes acceder desde el menú <a
+        href="{% url 'user:employees_view'%}">Empleados</a>,
+      o dando clic en el siguiente botón.<a href="">Empleados</a>.</p>
+    <a href="{% url 'user:employees_view'%}" class="btn btn-success">Iniciar encuesta</a>
+  </div>
+</div>
+{% endif %}

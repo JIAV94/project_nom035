@@ -1,0 +1,172 @@
+<div class="modal fade" id="registerEmployeeModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Registrar Empleado</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="registerEmployee" action="{% url 'user:register_employee' %}" method="POST" class="employeeForm"
+          onsubmit="registerEmployeeButton.disabled = true; return true;">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="first_name">Nombre</label>
+              <input id="first_name" type="text" class="form-control" placeholder="Nombre" name="first_name" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="last_name">Apellidos</label>
+              <input id="last_name" type="text" class="form-control" placeholder="Apellidos" name="last_name" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="email">Email</label>
+              <input id="email" type="email" class="form-control" placeholder="Email" name="email" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="username">Usuario</label>
+              <input id="username" class="form-control" placeholder="Usuario" name="username" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="password">Contraseña</label>
+              <input id="password" type="password" class="form-control" placeholder="Contraseña" name="password"
+                required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="password_confirmation">Confirmar contraseña</label>
+              <input id="password_confirmation" type="password" class="form-control" placeholder="Contraseña"
+                name="password_confirmation" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label>Sexo</label>
+              <div class="d-flex justify-content-start">
+                <div class="form-check m-1">
+                  <input class="form-check-input" type="radio" name="sex" id="sex1" value="1" required>
+                  <label class="form-check-label" for="sex1">
+                    Masculino
+                  </label>
+                </div>
+                <div class="form-check m-1">
+                  <input class="form-check-input" type="radio" name="sex" id="sex2" value="0" required>
+                  <label class="form-check-label" for="sex2">
+                    Femenino
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="birthday">Fecha de nacimiento</label>
+              <input id="birthdate" type="date" class="form-control" placeholder="Fecha de nacimiento" name="birthdate"
+                required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="civil_status">Estado civil</label>
+              <select id="civil_status" class="form-control" name="civil_status" required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in civil_status.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="educational_level">Nivel de estudios</label>
+              <select id="educational_level" class="form-control" name="educational_level" required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in educational_level.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="position">Ocupacion/Profesión/Puesto</label>
+              <input type="text" class="form-control" placeholder="Ocupacion/Profesión/Puesto" name="position"
+                id="position" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="area">Departamento/Seccion/Área</label>
+              <input type="text" class="form-control" placeholder="Departamento/Seccion/Área" name="area" id="area"
+                required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="position_type">Tipo de puesto</label>
+              <select id="position_type" class="form-control" name=position_type required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in position_type.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="contract_type">Tipo de contratación</label>
+              <select id="contract_type" class="form-control" name=contract_type required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in contract_type.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="personnel_type">Tipo de personal</label>
+              <select id="personnel_type" class="form-control" name=personnel_type required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in personnel_type.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="working_day_type">Tipo de jornada de trabajo</label>
+              <select id="working_day_type" class="form-control" name=working_day_type required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in working_day_type.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 form-group">
+              <label>Realiza rotación de turnos</label>
+              <div class="d-flex justify-content-start">
+                <div class="form-check m-1">
+                  <input class="form-check-input" type="radio" name="shift_rotation" id="shift_rotation1" value="1"
+                    required>
+                  <label class="form-check-label" for="shift_rotation">
+                    Si
+                  </label>
+                </div>
+                <div class="form-check m-1">
+                  <input class="form-check-input" type="radio" name="shift_rotation" id="shift_rotation2" value="0"
+                    required>
+                  <label class="form-check-label" for="shift_rotation2">
+                    No
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="current_position_time">Tiempo en el puesto actual</label>
+              <select id="current_position_time" class="form-control" name=current_position_time required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in current_position_time.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="work_experience_time">Tiempo experiencia laboral</label>
+              <select id="work_experience_time" class="form-control" name=work_experience_time required>
+                <option value="">Selecciona una opción</option>
+                {% for value, text in work_experience_time.items %}
+                <option value="{{value}}">{{text}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button id="register-submit-btn" type="submit" class="btn btn-primary"
+            name="registerEmployeeButton">Registrar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

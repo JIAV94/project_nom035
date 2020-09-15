@@ -1,0 +1,123 @@
+<div class="container col-lg-8 col-xl-7 shadow-lg mt-4 rounded border">
+  <div class="row bg-light text-body pb-2 mb-2 rounded-top border-bottom">
+    <div class="col mt-3">
+      <h5>Información del Empleado</h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Fecha de nacimiento:
+    </div>
+    <div class="col text-left">
+      {{employee.birthdate|date:"d/m/Y"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Edad:
+    </div>
+    <div class="col text-left">
+      {{employee.age}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Sexo:
+    </div>
+    <div class="col text-left">
+      {% if employee.sex %}
+      Masculino
+      {% else %}
+      Femenino
+      {% endif %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Estado civil:
+    </div>
+    <div class="col text-left">
+      {{info_log.civil_status}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Nivel de Estudios:
+    </div>
+    <div class="col text-left">
+      {{info_log.educational_level}}
+    </div>
+  </div>
+  <div class="row align-items-end">
+    <div class="col text-right font-weight-bold">
+      Ocupación / Profesión / Puesto:
+    </div>
+    <div class="col text-left">
+      {{info_log.position}}
+    </div>
+  </div>
+  <div class="row align-items-end">
+    <div class="col text-right font-weight-bold">
+      Departamento / Sección / Área:
+    </div>
+    <div class="col text-left">
+      {{info_log.area}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Tipo de puesto:
+    </div>
+    <div class="col text-left">
+      {{info_log.position_type}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Tipo de contratación:
+    </div>
+    <div class="col text-left">
+      {{info_log.contract_type}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Tipo de personal:
+    </div>
+    <div class="col text-left">
+      {{info_log.personnel_type}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col text-right font-weight-bold">
+      Tipo de jornada de trabajo:
+    </div>
+    <div class="col text-left">
+      {{info_log.working_day_type}}
+    </div>
+  </div>
+  <div class="row align-items-end">
+    <div class="col text-right font-weight-bold">
+      Realiza rotación de turnos:
+    </div>
+    <div class="col text-left">
+      {{info_log.shift_rotation}}
+    </div>
+  </div>
+  <div class="row align-items-end">
+    <div class="col text-right font-weight-bold">
+      Tiempo en el puesto actual:
+    </div>
+    <div class="col text-left">
+      {{info_log.current_position_time}}
+    </div>
+  </div>
+  <div class="row align-items-end">
+    <div class="col text-right font-weight-bold mb-3">
+      Tiempo experiencia laboral:
+    </div>
+    <div class="col text-left mb-3">
+      {{info_log.work_experience_time}}
+    </div>
+  </div>
+</div>
