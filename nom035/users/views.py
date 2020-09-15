@@ -8,7 +8,7 @@ from django.contrib.auth.password_validation import *
 from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext
 from .models import InformationLog, Employee
-from surveys.models import AnswerSheet
+from surveys.models import AnswerSheet, Survey
 from . import choices
 
 # Finished
@@ -48,7 +48,7 @@ def index_view(request):
                 rca, graph_data = company_index_data(surveys)
         else:
             employee = request.user.employee
-            sheets = employee.answer_sheets.filter(final_answer="unanswered")
+            sheets = employee.answer_sheets.filter(final_answer="unanswered").order_by('-id')
             for sheet in sheets:
                 surveys.append(sheet.survey)
         context = {
@@ -56,7 +56,7 @@ def index_view(request):
             'company': company,
             'surveys': surveys,
             'graph_data': graph_data,
-            'require_clinical_atention': rca
+            'require_clinical_attention': rca
         }
         return render(request, 'users/index.html', context)
     else:
@@ -216,7 +216,7 @@ def password_validation(password):
         else:
             return str(e)
 
-# Pending
+# Finished
 def delete_employee(request, employee_id):
     company = is_company(request.user)
     if request.user.is_authenticated and company is not None:
@@ -229,26 +229,16 @@ def delete_employee(request, employee_id):
 # Finished
 def company_index_data(surveys):
     graph_data = []
-    if (surveys.count() == 1 or surveys[0].guide_number == surveys[1].guide_number):
-        try:
-            rca = surveys[0].answer_sheets.filter(final_answer="Requiere atención clínica")
-            dnrca = surveys[0].answer_sheets.all().count()-rca
-            graph_data = [dnrca, rca.count()]
-        except:
-            graph_data = [0, 0]
+    rca = surveys[0].answer_sheets.filter(final_answer="Requiere atención clínica")
+    if surveys.count() == 1 or surveys[0].guide_number == surveys[1].guide_number:
+        dnrca = surveys[0].answer_sheets.all().count()-rca.count()
+        graph_data = [dnrca, rca.count()]
     else:
-        try:
-            graph_data.append(surveys[0].answer_sheets.filter(final_answer="Nulo").count())
-            graph_data.append(surveys[0].answer_sheets.filter(final_answer="Bajo").count())
-            graph_data.append(surveys[0].answer_sheets.filter(final_answer="Medio").count())
-            graph_data.append(surveys[0].answer_sheets.filter(final_answer="Alto").count())
-            graph_data.append(surveys[0].answer_sheets.filter(final_answer="Muy Alto").count())
-        except:
-            graph_data=[0, 0, 0, 0, 0]
-        try:
-            rca = surveys[1].answer_sheets.filter(final_answer="Requiere atención clínica")
-        except:
-            rca = 0
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Nulo").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Bajo").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Medio").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Alto").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Muy Alto").count())
     return rca, graph_data
 
 # Finished
@@ -266,7 +256,7 @@ def employees_view(request):
                         sheets[0].survey.guide_number == sheets[1].survey.guide_number):
                         guide_I.append(sheets[0].final_answer)
                         guide_II.append('NA')
-                    elif sheets[0].guide_number == 1:
+                    elif sheets[0].survey.guide_number == 1:
                         guide_I.append(sheets[0].final_answer)
                         guide_II.append(sheets[1].final_answer)
                     else:
@@ -349,6 +339,25 @@ def policy_view(request):
     else:
         return render(request, 'users/policy.html')
     
+# Finished
+def employee_answers_view(request, employee_id, survey_id):
+    company = is_company(request.user)
+    if request.user.is_authenticated and company is not None:
+        survey = get_object_or_404(Survey, id=survey_id)
+        employee = get_object_or_404(Employee, id=employee_id)
+        if survey.company == employee.company and employee.company == company:
+            answers_sheet = survey.answer_sheets.get(employee=employee)
+            info_log = employee.information_logs.last()
+            context = {
+                'survey': survey,
+                'employee': employee,
+                'answers_sheet': answers_sheet,
+                'info_log': info_log_string(info_log)
+            }
+            return render(request, 'users/employee/employee_answers.html', context)
+        return redirect(_404(request, 'Page not found', '404.html'))
+    return redirect('index_view')
+
 # Finished
 def is_company(user):
     try:

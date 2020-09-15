@@ -1,33 +1,39 @@
-<h1>{{company.social_denomination}}</h1>
+<div class="row mt-3">
+  <div class="col-12 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-6 offset-xl-3">
+    {% include '_alerts.html' %}
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="text-center">
+    <h2>{{company.social_denomination}}</h2>
+    <h5 class="card-header bg-white border-0 text-center text-monospace">Últimos resultados ({{surveys.0.date}})</h5>
+  </div>
+</div>
 {% if surveys %}
 <!-- Resumen de Resultados -->
-<div class="card bg-white border-0">
-  <h5 class="card-header bg-white border-0 text-center">Últimos resultados ({{surveys.0.date}})</h5>
-  <div class="card-body">
-    <div class="row">
-      <!-- Resultados cuando hay guia II o II -->
-      {% if surveys.0.guide_number != 1 %}
-      {% include './_summary_II_III.html' with surveys=surveys %}
-      <!-- Resultados cuando solo hay guia I -->
-      {% else %}
-      {% include './_summary_I.html' with surveys=surveys %}
-      {% endif %}
-      <!-- Lista Guia I -->
-      <div class="col-12 col-sm-12 col-md-12col-lg-12 col-xl-12">
-        <div class="card text-center">
-          <div class="card-header">
-            Requieren atención clinica:
-          </div>
-          <div class="card-body">
-            <ul>
-              {% for person in require_clinical_attention %}
-              <li>{{person.employee.user.first_name}} {{person.employee.user.last_name}}
-                ({{person.employee.user.username}})</li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </div>
+<!-- Resultados cuando hay guia II o III -->
+{% if surveys.1.guide_number > 1 %}
+<div class="card-body">
+  <div class="row">
+    {% include './_summary_II_III.html' %}
+  </div>
+</div>
+
+<!-- Resultados cuando solo hay guia I -->
+{% else %}
+{% include './_summary_I.html' %}
+{% endif %}
+<!-- Lista Guia I -->
+<div class="container">
+  <div class="card text-center">
+    <div class="card-header">
+      Requieren atención clínica:
+    </div>
+    <div class="card-body">
+      {% for answer_sheet in require_clinical_attention %}
+      {{answer_sheet.employee.user.first_name}} {{answer_sheet.employee.user.last_name}}
+      ({{answer_sheet.employee.user.username}})
+      {% endfor %}
     </div>
   </div>
 </div>

@@ -49,7 +49,7 @@ class AnswerSheet(models.Model):
     information_log = models.ForeignKey(
         InformationLog, on_delete=models.CASCADE, related_name='answer_sheets')
     date = models.DateField(auto_now_add=True)
-    final_answer = models.CharField(max_length=15, default='unanswered')
+    final_answer = models.CharField(max_length=30, default='unanswered')
 
     def __str__(self):
         return f"{self.employee} - {self.survey}"
@@ -61,7 +61,7 @@ class Answer(models.Model):
     answer_sheet = models.ForeignKey(
         'AnswerSheet', on_delete=models.CASCADE, related_name='answers')
     value = models.IntegerField()
-
+    content = models.CharField(max_length=15)
     def __str__(self):
         return f"{self.question} - {self.value}"
 

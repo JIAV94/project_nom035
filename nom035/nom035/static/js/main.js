@@ -114,7 +114,7 @@ $(document).ready(function () {
     $('#deleteSurveyModal').modal('show');
   });
 
-  // Oculta las preguntas de las encuestas dependiendo la respuesta
+  // Hide questions from section -1 depending on the answer
   $('#survey-switch-1 :input').change(function () {
     if ($('#survey-switch-1 > div > input').first().is(':checked')) {
       $('.section-hidden').attr('hidden', false)
@@ -124,11 +124,11 @@ $(document).ready(function () {
     else {
       $('.section-hidden').attr('hidden', true)
       $('.question-hidden').attr('hidden', true)
-      $('.question-hidden :input').attr('required', false)
+      $('.question-hidden :input').attr('required', false).prop('checked', false)
     }
   });
 
-  // Oculta las preguntas de las encuestas dependiendo la respuesta
+  // Hide questions from section -2 depending on the answer
   $('#survey-switch-2 :input').change(function () {
     if ($('#survey-switch-2 > div > input').first().is(':checked')) {
       $('.question-hidden-2').attr('hidden', false)
@@ -136,7 +136,64 @@ $(document).ready(function () {
     }
     else {
       $('.question-hidden-2').attr('hidden', true)
-      $('.question-hidden-2 :input').attr('required', false)
+      $('.question-hidden-2 :input').attr('required', false).prop('checked', false)
     }
   });
+
+  // Index view graphs
+  if (document.getElementById("guide_II_III_chart")) {
+    const ctx = document.getElementById("guide_II_III_chart")
+    const guide_II_III_chart = new Chart(ctx, {
+      type: 'polarArea',
+      data: {
+        datasets: [{
+          data: [
+            ctx.dataset.graphNulo,
+            ctx.dataset.graphBajo,
+            ctx.dataset.graphMedio,
+            ctx.dataset.graphAlto,
+            ctx.dataset.graphMuyAlto
+          ],
+          backgroundColor: ['#58A1D9', '#B0D8A4', '#FEE191', '#FD8060', '#E84258'],
+          hoverBackgroundColor: ['#2e59d9', '#17a673', '#ffe42e', '#F24F09', '#E42024'],
+          hoverBorderColor: "rgba(234, 236, 244, 1)",
+
+        }],
+        labels: ["Nulo", "Bajo", "Medio", "Alto", "Muy Alto"],
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: true
+        },
+        cutoutPercentage: 30,
+      },
+    });
+  }
+  else {
+    const ctx = document.getElementById("guide_I_chart");
+    const guide_I_chart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+        datasets: [{
+          data: [
+            ctx.dataset.graphNo,
+            ctx.dataset.graphSi
+          ],
+          backgroundColor: ['#58A1D9', '#E84258'],
+          hoverBackgroundColor: ['#2e59d9', '#E42024'],
+          hoverBorderColor: "rgba(234, 236, 244, 1)",
+
+        }],
+        labels: ["No Requiere Atención", "Requiere Atencion"],
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: {
+          display: true
+        },
+        cutoutPercentage: 30,
+      },
+    });
+  }
 });
