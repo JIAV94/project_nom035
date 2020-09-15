@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-fluid">
+  <div class="text-center">
+    <h2>{{employee.user.first_name}} {{employee.user.last_name}}</h2>
+    <h5 class="text-monospace">({{employee.user.username}})</h5>
+    <h4>{{survey.title}}</h4>
+    <h5>Nivel de Riesgo: <span class="text-monospace text-primary">{{answers_sheet.final_answer}}</span></h5>
+    {% include './_employee_information.html' %}
+    {% if survey.guide_number != 1%}
+    <div class="container col-lg-8 col-xl-7 shadow-lg mt-4 rounded border">
+      <div class="row bg-light text-body pb-2 mb-2 rounded-top border-bottom">
+        <div class="col mt-3">
+          <h5>Calificación por Categoría</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Ambiente de trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.work_environment}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Factores propios de la actividad
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.activity_factor}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Organización del tiempo de trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.time_organization}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Liderazgo y relaciones en el trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.leadership_relationship}}
+        </div>
+      </div>
+      {% if survey.guide_number == 3 %}
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Entorno organizacional
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.organizational_environment}}
+        </div>
+      </div>
+      {% endif %}
+      <div class="row mb-2"></div>
+    </div>
+
+    <div class="container col-lg-8 col-xl-7 shadow-lg mt-4 rounded border">
+      <div class="row bg-light text-body pb-2 mb-2 rounded-top border-bottom">
+        <div class="col mt-3">
+          <h5>Calificación por Dominio</h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Condiciones en el ambiente de trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.work_environment_conditions}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Carga de trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.working_load}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Falta de control sobre el trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.work_lack_control}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Jornada de trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.working_day}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Interferencia en la relación trabajo-familia
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.family_work_relationship}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Liderazgo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.leadership}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Relaciones en el trabajo
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.work_relationship}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Violencia
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.violence}}
+        </div>
+      </div>
+      {% if survey.guide_number == 3 %}
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Reconocimiento del desempeño
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.performance_recognition}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col text-right font-weight-bold">
+          Insuficiente sentido de pertenencia e, inestabilidad
+        </div>
+        <div class="col text-left">
+          {{answers_sheet.grade.sense_belonging_instability}}
+        </div>
+      </div>
+      {% endif %}
+      <div class="row mb-2"></div>
+    </div>
+    {% endif %}
+    <div class="container col-lg-8 col-xl-7 shadow-lg mt-4 mb-4 rounded border">
+      <div class="row bg-light text-body pb-2 mb-2 rounded-top border-bottom">
+        <div class="col mt-3">
+          <h5>Calificación por Pregunta</h5>
+        </div>
+      </div>
+      {% for answer in answers_sheet.answers.all %}
+      <div class="row border-bottom">
+        <div class="col-9 text-left font-weight-bold">
+          {{answer.question.content}}
+        </div>
+        <div class="col-3 text-right">
+          {{answer.content}}
+        </div>
+      </div>
+      {% endfor %}
+      <div class="row mb-2"></div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

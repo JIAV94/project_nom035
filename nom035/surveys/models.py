@@ -4,10 +4,10 @@ from users.models import Employee, Company, InformationLog
 
 class Survey(models.Model):
     company = models.ForeignKey(
-        Company, on_delete=models.CASCADE, related_name="surveys", default=1)
+        Company, on_delete=models.CASCADE, related_name="surveys")
     title = models.CharField(max_length=150)
     responsible = models.CharField(max_length=70)
-    responsible_id = models.IntegerField(blank=True)
+    responsible_id = models.IntegerField()
     conclusions = models.TextField(default='')
     method = models.CharField(max_length=30, default='')
     objective = models.TextField(default='')
@@ -24,6 +24,7 @@ class Section(models.Model):
     survey = models.ForeignKey(
         'Survey', on_delete=models.CASCADE, related_name='sections')
     content = models.CharField(max_length=200, default='')
+    section_type = models.IntegerField()
 
     def __str__(self):
         return f"{self.survey.guide_number} - {self.content}"
@@ -48,7 +49,7 @@ class AnswerSheet(models.Model):
     information_log = models.ForeignKey(
         InformationLog, on_delete=models.CASCADE, related_name='answer_sheets')
     date = models.DateField(auto_now_add=True)
-    final_answer = models.CharField(max_length=15, default='unanswered')
+    final_answer = models.CharField(max_length=30, default='unanswered')
 
     def __str__(self):
         return f"{self.employee} - {self.survey}"
@@ -60,7 +61,7 @@ class Answer(models.Model):
     answer_sheet = models.ForeignKey(
         'AnswerSheet', on_delete=models.CASCADE, related_name='answers')
     value = models.IntegerField()
-
+    content = models.CharField(max_length=15)
     def __str__(self):
         return f"{self.question} - {self.value}"
 

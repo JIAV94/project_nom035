@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
-{% include '_form_I.html' %}
-{% include '_form_II_III.html' %}
+{% if survey.guide_number == 1 %}
+{% include './_form_I.html' %}
+{% else %}
+{% include './_form_II_III.html' %}
+{% endif %}
 {% endblock %}

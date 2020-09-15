@@ -7,12 +7,6 @@ img._404 {
     max-width: 100%;
 }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-}
-
 .bg-login-form {
     opacity: 0.8;
 }

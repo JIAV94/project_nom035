@@ -8,7 +8,7 @@ from django.contrib.auth.password_validation import *
 from django.http import HttpResponse, JsonResponse
 from django.template import RequestContext
 from .models import InformationLog, Employee
-from surveys.models import AnswerSheet
+from surveys.models import AnswerSheet, Survey
 from . import choices
 
 # Finished
@@ -36,27 +36,27 @@ def user_logout(request):
 # Finished
 def index_view(request):
     if request.user.is_authenticated:
-        employee = None
-        company = None
+        employee = is_employee(request.user)
+        company = is_company(request.user)
         surveys = []
         graph_data = None
         rca = None # Require clinical attention
-        try:
-            employee = request.user.employee
-            sheets = employee.answer_sheets.filter(final_answer="unanswered")
-            for sheet in sheets:
-                surveys.append(sheet.survey)
-        except:
+        if company is not None:
             company = request.user.company
             surveys = company.surveys.order_by('-id')[:2]
             if surveys:
                 rca, graph_data = company_index_data(surveys)
+        else:
+            employee = request.user.employee
+            sheets = employee.answer_sheets.filter(final_answer="unanswered").order_by('-id')
+            for sheet in sheets:
+                surveys.append(sheet.survey)
         context = {
             'employee': employee,
             'company': company,
             'surveys': surveys,
             'graph_data': graph_data,
-            'require_clinical_atention': rca
+            'require_clinical_attention': rca
         }
         return render(request, 'users/index.html', context)
     else:
@@ -84,11 +84,12 @@ def register_employee(request):
         shft_rot = request.POST["shift_rotation"]
         curr_pos_t = request.POST["current_position_time"]
         work_exp_t = request.POST["work_experience_time"]
-        try:
-            company = request.user.company
+
+        company = is_company(request.user)
+        if company is not None:
             employee_code = company.employees_code
             username = employee_code + username
-        except:
+        else:
             return redirect(_404(request, 'Page not found', '404.html'))
         if User.objects.filter(username=username).exists():
             messages.error(request, 'El nombre de usuario ya existe, prueba con otro')
@@ -118,6 +119,8 @@ def update_employee(request, employee_id):
         f_name = request.POST["first_name"]
         l_name = request.POST["last_name"]
         email = request.POST["email"]
+        pwd = request.POST["password"]
+        pwd_conf = request.POST["password_confirmation"]
         b_date = request.POST["birthdate"]
         civ_st = request.POST["civil_status"]
         educ_lvl = request.POST["educational_level"]
@@ -130,35 +133,32 @@ def update_employee(request, employee_id):
         shft_rot = request.POST["shift_rotation"]
         curr_pos_t = request.POST["current_position_time"]
         work_exp_t = request.POST["work_experience_time"]
-        try:
-            company = request.user.company
+
+        company = is_company(request.user)
+        if company is not None:
             employee = get_object_or_404(Employee, id=employee_id)
             if employee.company == company:
                 info = employee.information_logs.last()
             else:
                 return redirect(_404(request, 'Page not found', '404.html'))
-        except:
+        else:
             return redirect(_404(request, 'Page not found', '404.html'))
-        try:
-            pwd = request.POST["password"]
-            pwd_conf = request.POST["password_confirmation"]
-            valid_pwd = password_validation(pwd)
-            if valid_pwd == 0:
-                if pwd != pwd_conf:
-                    messages.error(request, 'Las contraseñas no coinciden')
-                    return redirect('user:employees_view')
-                employee.user.set_password(pwd)
+        if pwd != "":
+            if pwd != pwd_conf:
+                messages.error(request, 'Las contraseñas no coinciden')
             else:
-                messages.error(request, valid_pwd)
-        except:
-            pass
+                valid_pwd = password_validation(pwd)
+                if valid_pwd == 0:
+                    employee.user.set_password(pwd)
+                else:
+                    messages.error(request, valid_pwd)
         if User.objects.filter(email=email).exists() and employee.user.email != email:
             messages.error(request, 'El email ingresado ya existe, prueba con otro')
-            return redirect('user:employees_view')
+        else:
+            employee.user.email = email
         employee.birthdate = b_date
         employee.user.first_name = f_name
         employee.user.last_name = l_name
-        employee.user.email = email
         employee.save()
         employee.user.save()
         InformationLog.objects.get_or_create(
@@ -172,9 +172,8 @@ def update_employee(request, employee_id):
 # Finished
 def load_employee_data(request, employee_id):
     if request.user.is_authenticated:
-        try:
-            company = request.user.company
-        except:
+        company = is_company(request.user)
+        if company is None:
             return redirect(_404(request, 'Page not found', '404.html'))
         employee = get_object_or_404(Employee, id=employee_id)
         information_log = employee.information_logs.last()
@@ -217,42 +216,37 @@ def password_validation(password):
         else:
             return str(e)
 
-# Pending
+# Finished
 def delete_employee(request, employee_id):
-    if request.user.is_authenticated:
-        try:
-            company = request.user.company
-            employee = get_object_or_404(Employee, id=employee_id)
-            if employee.company == company:
-                employee.user.delete()
-            else:
-                return redirect(_404(request, 'Page not found', '404.html'))
-        except:
-            return redirect(_404(request, 'Page not found', '404.html'))
-    return redirect('login_view')
+    company = is_company(request.user)
+    if request.user.is_authenticated and company is not None:
+        employee = get_object_or_404(Employee, id=employee_id)
+        if employee.company == company:
+            employee.user.delete()
+            return redirect('user:employees_view')
+    return redirect(_404(request, 'Page not found', '404.html'))
 
 # Finished
 def company_index_data(surveys):
     graph_data = []
-    if (surveys.count() == 1 or surveys[0].guide_number == surveys[1].guide_number):
-        rca = surveys[0].answer_sheets.filter(final_answer="Requiere atención clínica")
-        dnrca = surveys[0].answer_sheets.all().count()-rca
+    rca = surveys[0].answer_sheets.filter(final_answer="Requiere atención clínica")
+    if surveys.count() == 1 or surveys[0].guide_number == surveys[1].guide_number:
+        dnrca = surveys[0].answer_sheets.all().count()-rca.count()
         graph_data = [dnrca, rca.count()]
     else:
-        graph_data.append(surveys[0].answer_sheets.filter(final_answer="Nulo").count())
-        graph_data.append(surveys[0].answer_sheets.filter(final_answer="Bajo").count())
-        graph_data.append(surveys[0].answer_sheets.filter(final_answer="Medio").count())
-        graph_data.append(surveys[0].answer_sheets.filter(final_answer="Alto").count())
-        graph_data.append(surveys[0].answer_sheets.filter(final_answer="Muy Alto").count())
-        rca = surveys[1].answer_sheets.filter(final_answer="Requiere atención clínica")
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Nulo").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Bajo").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Medio").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Alto").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Muy Alto").count())
     return rca, graph_data
 
 # Finished
 def employees_view(request):
-    user = request.user
-    if user.is_authenticated:
+    company = is_company(request.user)
+    if request.user.is_authenticated and company is not None:
         try: 
-            employees = user.company.employees.all()
+            employees = company.employees.all()
             guide_I = []
             guide_II = []
             for employee in employees:
@@ -262,7 +256,7 @@ def employees_view(request):
                         sheets[0].survey.guide_number == sheets[1].survey.guide_number):
                         guide_I.append(sheets[0].final_answer)
                         guide_II.append('NA')
-                    elif sheets[0].guide_number == 1:
+                    elif sheets[0].survey.guide_number == 1:
                         guide_I.append(sheets[0].final_answer)
                         guide_II.append(sheets[1].final_answer)
                     else:
@@ -291,15 +285,11 @@ def employees_view(request):
 
 # Finished
 def employee_details_view(request, employee_id):
-    user = request.user
-    if user.is_authenticated:
-        try: 
-            company = user.company
-            employee = get_object_or_404(Employee, id=employee_id)
-            sheets = AnswerSheet.objects.filter(employee=employee).order_by('-id')
-            info_log = employee.information_logs.last()
-        except:
-            return redirect(_404(request, 'Page not found', '404.html'))
+    company = is_company(request.user)
+    if request.user.is_authenticated and company is not None:
+        employee = get_object_or_404(Employee, id=employee_id)
+        sheets = AnswerSheet.objects.filter(employee=employee).order_by('-id')
+        info_log = employee.information_logs.last()
         context = {
           'employee': employee,
           'sheets': sheets,
@@ -314,7 +304,7 @@ def employee_details_view(request, employee_id):
           'work_experience_time': choices.work_experience_time,
         }
         return render(request, 'users/employee/employee_details.html', context)
-    return redirect('login_view')
+    return redirect(_404(request, 'Page not found', '404.html'))
 
 # Finished
 def info_log_string(info_log):
@@ -349,6 +339,41 @@ def policy_view(request):
     else:
         return render(request, 'users/policy.html')
     
+# Finished
+def employee_answers_view(request, employee_id, survey_id):
+    company = is_company(request.user)
+    if request.user.is_authenticated and company is not None:
+        survey = get_object_or_404(Survey, id=survey_id)
+        employee = get_object_or_404(Employee, id=employee_id)
+        if survey.company == employee.company and employee.company == company:
+            answers_sheet = survey.answer_sheets.get(employee=employee)
+            info_log = employee.information_logs.last()
+            context = {
+                'survey': survey,
+                'employee': employee,
+                'answers_sheet': answers_sheet,
+                'info_log': info_log_string(info_log)
+            }
+            return render(request, 'users/employee/employee_answers.html', context)
+        return redirect(_404(request, 'Page not found', '404.html'))
+    return redirect('index_view')
+
+# Finished
+def is_company(user):
+    try:
+        company = user.company
+        return company
+    except:
+        return None
+
+# Finished
+def is_employee(user):
+    try:
+        employee = user.employee
+        return employee
+    except:
+        return None
+
 # Finished
 def _404(request, exception, template_name="404.html"):
     response = render_to_response(template_name)

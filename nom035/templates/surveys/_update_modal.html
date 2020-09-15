@@ -1,0 +1,56 @@
+<div class="modal fade" id="updateSurveyModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Encuesta</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="updateSurvey" action="{% url 'survey:update_survey' 0 %}" method="POST" class="surveyForm"
+          onsubmit="updateSurveyButton.disabled = true; return true;">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="update_responsible">Responsable</label>
+              <input id="update_responsible" type="text" class="form-control" placeholder="Responsable"
+                name="responsible" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="update_responsible_id">Cédula profesional</label>
+              <input id="update_responsible_id" type="number" class="form-control" placeholder="Cédula profesional"
+                name="responsible_id">
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="update_main_activities">Actividades principales</label>
+              <input id="update_main_activities" type="text" class="form-control"
+                placeholder="Departamento/Seccion/Área" name="main_activities" required>
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="update_objective">Objetivo</label>
+              <input id="update_objective" type="text" class="form-control" placeholder="Objetivo" name="objective">
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="update_method">Método utilizado</label>
+              <input id="update_method" type="text" class="form-control" placeholder="Método utilizado" name="method">
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="update_recommendations">Recomendaciones</label>
+              <input id="update_recommendations" type="text" class="form-control" placeholder="Recomendaciones"
+                name="recommendation" value="N/A">
+            </div>
+            <div class="col-12 col-sm-6 col-xl-6 col-lg-6 col-md-6 form-group">
+              <label for="update_conclusions">Conclusiones</label>
+              <input id="update_conclusions" type="text" class="form-control" placeholder="Conclusiones"
+                name="conclusions">
+            </div>
+          </div>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button id="update-submit-btn" type="submit" class="btn btn-primary"
+            name="updateSurveyButton">Actualizar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
