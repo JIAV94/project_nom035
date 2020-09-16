@@ -1,0 +1,58 @@
+Type|Num|Contenido
+2|NA|Cuestionario para identificar los factores de riesgo psicosocial en los centros de trabajo
+Section|0|Para responder las preguntas siguientes considere las condiciones de su centro de trabajo, así como la cantidad y ritmo de trabajo.
+Question|1|Mi trabajo me exige hacer mucho esfuerzo físico.|True|
+Question|2|Me preocupa sufrir un accidente en mi trabajo.|True|
+Question|3|Considero que las actividades que realizo son peligrosas.|True|
+Question|4|Por la cantidad de trabajo que tengo debo quedarme tiempo adicional a mi turno.|True|
+Question|5|Por la cantidad de trabajo que tengo debo trabajar sin parar.|True|
+Question|6|Considero que es necesario mantener un ritmo de trabajo acelerado.|True|
+Question|7|Mi trabajo exige que esté muy concentrado.|True|
+Question|8|Mi trabajo requiere que memorice mucha información.|True|
+Question|9|Mi trabajo exige que atienda varios asuntos al mismo tiempo.|True|
+Section|0|Las preguntas siguientes están relacionadas con las actividades que realiza en su trabajo y las responsabilidades que tiene.
+Question|10|En mi trabajo soy responsable de cosas de mucho valor.|True|
+Question|11|Respondo ante mi jefe por los resultados de toda mi área de trabajo.|True|
+Question|12|En mi trabajo me dan órdenes contradictorias.|True|
+Question|13|Considero que en mi trabajo me piden hacer cosas innecesarias.|True|
+Section|0|Las preguntas siguientes están relacionadas con el tiempo destinado a su trabajo y sus responsabilidades familiares.
+Question|14|Trabajo horas extras más de tres veces a la semana.|True|
+Question|15|Mi trabajo me exige laborar en días de descanso, festivos o fines de semana.|True|
+Question|16|Considero que el tiempo en el trabajo es mucho y perjudica mis actividades familiares o personales.|True|
+Question|17|Pienso en las actividades familiares o personales cuando estoy en mi trabajo.|True|
+Section|0|Las preguntas siguientes están relacionadas con las decisiones que puede tomar en su trabajo.
+Question|18|Mi trabajo permite que desarrolle nuevas habilidades.|False|
+Question|19|En mi trabajo puedo aspirar a un mejor puesto.|False|
+Question|20|Durante mi jornada de trabajo puedo tomar pausas cuando las necesito.|False|
+Question|21|Puedo decidir la velocidad a la que realizo mis actividades en mi trabajo.|False|
+Question|22|Puedo cambiar el orden de las actividades que realizo en mi trabajo.|False|
+Section|0|Las preguntas siguientes están relacionadas con la capacitación e información que recibe sobre su trabajo.
+Question|23|Me informan con claridad cuáles son mis funciones.|False|
+Question|24|Me explican claramente los resultados que debo obtener en mi trabajo.|False|
+Question|25|Me informan con quién puedo resolver problemas o asuntos de trabajo.|False|
+Question|26|Me permiten asistir a capacitaciones relacionadas con mi trabajo.|False|
+Question|27|Recibo capacitación útil para hacer mi trabajo.|False|
+Section|0|Las preguntas siguientes se refieren a las relaciones con sus compañeros de trabajo y su jefe.
+Question|28|Mi jefe tiene en cuenta mis puntos de vista y opiniones.|False|
+Question|29|Mi jefe ayuda a solucionar los problemas que se presentan en el trabajo.|False|
+Question|30|Puedo confiar en mis compañeros de trabajo.|False|
+Question|31|Cuando tenemos que realizar trabajo de equipo los compañeros colaboran.|False|
+Question|32|Mis compañeros de trabajo me ayudan cuando tengo dificultades.|False|
+Question|33|En mi trabajo puedo expresarme libremente sin interrupciones.|False|
+Question|34|Recibo críticas constantes a mi persona y/o trabajo.|True|
+Question|35|Recibo burlas, calumnias, difamaciones, humillaciones o ridiculizaciones.|True|
+Question|36|Se ignora mi presencia o se me excluye de las reuniones de trabajo y en la toma de decisiones.|True|
+Question|37|Se manipulan las situaciones de trabajo para hacerme parecer un mal trabajador.|True|
+Question|38|Se ignoran mis éxitos laborales y se atribuyen a otros trabajadores.|True|
+Question|39|Me bloquean o impiden las oportunidades que tengo para obtener ascenso o mejora en mi trabajo.|True|
+Question|40|He presenciado actos de violencia en mi centro de trabajo.|True|
+Section|-1|Las preguntas siguientes están relacionadas con la atención a clientes y usuarios.
+Question|-1|En mi trabajo debo brindar servicio a clientes o usuarios:|False|
+Question|41|Atiendo clientes o usuarios muy enojados.|True|
+Question|42|Mi trabajo me exige atender personas muy necesitadas de ayuda o enfermas.|True|
+Question|43|Para hacer mi trabajo debo demostrar sentimientos distintos a los míos.|True|
+Section|-2|Las siguientes preguntas están relacionadas con las actitudes de los trabajadores que supervisa.
+Question|-2|Soy jefe de otros trabajadores:|False|
+Question|44|Comunican tarde los asuntos de trabajo.|True|
+Question|45|Dificultan el logro de los resultados del trabajo.|True|
+Question|46|Ignoran las sugerencias para mejorar su trabajo.|True|

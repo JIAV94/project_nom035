@@ -1,12 +1,9 @@
-import json
 from django.shortcuts import render, redirect, render_to_response, get_object_or_404
-from django.core import serializers
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import *
-from django.http import HttpResponse, JsonResponse
-from django.template import RequestContext
+from django.http import JsonResponse
 from .models import InformationLog, Employee
 from surveys.models import AnswerSheet, Survey
 from . import choices
@@ -204,7 +201,7 @@ def password_validation(password):
                   NumericPasswordValidator]
     try:
         for validator in validators:
-              validator().validate(password)
+            validator().validate(password)
         return 0
     except ValidationError as e:
         if str(e) == "['This password is too short. It must contain at least 8 characters.']":
@@ -245,7 +242,7 @@ def company_index_data(surveys):
 def employees_view(request):
     company = is_company(request.user)
     if request.user.is_authenticated and company is not None:
-        try: 
+        try:
             employees = company.employees.all()
             guide_I = []
             guide_II = []
@@ -338,7 +335,7 @@ def policy_view(request):
             return redirect('user:policy_view')
     else:
         return render(request, 'users/policy.html')
-    
+
 # Finished
 def employee_answers_view(request, employee_id, survey_id):
     company = is_company(request.user)

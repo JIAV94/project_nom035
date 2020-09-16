@@ -96,18 +96,10 @@ def update_survey(request, survey_id):
                 responsible = request.POST["responsible"]
                 responsible_id = request.POST["responsible_id"]
                 main_activities = request.POST["main_activities"]
-                conclusions = ""
-                method = ""
-                objective = ""
-                recommendations = ""
-                if conclusions in request.POST:
-                    conclusions = request.POST["conclusions"]
-                if method in request.POST:
-                    method = request.POST["method"]
-                if objective in request.POST:
-                    objective = request.POST["objective"]
-                if recommendations in request.POST:
-                    recommendations = request.POST["recommendations"]
+                conclusions = request.POST.get('conclusions', "")
+                method = request.POST.get('method', "")
+                objective = request.POST.get('objective', "")
+                recommendations = request.POST.get('recommendations', "")
                 survey.responsible = responsible
                 survey.responsible_id = responsible_id
                 survey.main_activities = main_activities
