@@ -235,7 +235,7 @@ def company_index_data(surveys):
         graph_data.append(surveys[1].answer_sheets.filter(final_answer="Bajo").count())
         graph_data.append(surveys[1].answer_sheets.filter(final_answer="Medio").count())
         graph_data.append(surveys[1].answer_sheets.filter(final_answer="Alto").count())
-        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Muy Alto").count())
+        graph_data.append(surveys[1].answer_sheets.filter(final_answer="Muy alto").count())
     return rca, graph_data
 
 # Finished
