@@ -1,0 +1,17 @@
+div.bg-login {
+    background-image: url('../img/login.jpg');
+    background-size: cover;
+}
+
+img._404 {
+    max-width: 100%;
+}
+
+.bg-login-form {
+    opacity: 0.8;
+}
+
+.full-height {
+    height: 100vh; 
+    width: 100%;
+}
