@@ -101,7 +101,11 @@
       Realiza rotación de turnos:
     </div>
     <div class="col text-left">
-      {{info_log.shift_rotation}}
+      {% if info_log.shift_rotation %}
+      Si
+      {% else %}
+      No
+      {% endif %}
     </div>
   </div>
   <div class="row align-items-end">
