@@ -50,6 +50,8 @@
         </th>
         <td class="align-middle">
           <div class="text-center">
+            {% if guideI == "unanswered" %}
+            <span class="badge text-body bg-light badge-pill border">Sin resolver</span>
             {% if guideI == "Requiere atención clínica" %}
             <span class="badge text-white badge-pill" style="background-color:#E84258;">{{guideI}}</span>
             {% else %}
@@ -59,6 +61,8 @@
         </td>
         <td class="align-middle">
           <div class="text-center">
+            {% if guideII == "unanswered" %}
+            <span class="badge text-body bg-light badge-pill border">Sin resolver</span>
             {% if guideII == "Muy alto" %}
             <span class="badge text-white badge-pill" style="background-color:#E84258;">{{guideII}}</span>
             {% elif guideII == "Alto" %}
