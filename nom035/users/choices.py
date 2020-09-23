@@ -1,9 +1,8 @@
 civil_status = {
-  "0": "Soltero",
-  "1": "Casado",
-  "2": "Soltero",
-  "3": "Divorciado",
-  "4": "Viudo",
+  "0": "Casado",
+  "1": "Soltero",
+  "2": "Divorciado",
+  "3": "Viudo",
   "5": "Union libre"
 }
 
