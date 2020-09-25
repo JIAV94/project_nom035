@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, JsonResponse
-from users.views import is_company, is_employee
-from .models import *
+from django.contrib import messages
+from django.http import JsonResponse
+from users.views import is_company, is_employee, _404
+from .models import Survey, Section, Question, Answer, AnswerSheet
 
 # Finished
 def surveys_view(request):
@@ -70,7 +71,7 @@ def create_survey(request):
                               section=section, number=data[1], content=data[2],
                               inverted=data[3]
                             )
-                    asign_survey(survey, employees)
+                    link_survey(survey, employees)
             return redirect('survey:surveys_view')
         else:
             return redirect('survey:surveys_view')
@@ -78,13 +79,33 @@ def create_survey(request):
         return redirect(_404(request, 'Page not found', '404.html'))
 
 # Finished
-def asign_survey(survey, employees):
+def link_survey(survey, employees):
     for employee in employees:
         info_log = employee.information_logs.last()
         AnswerSheet.objects.create(
           employee=employee, information_log=info_log, survey=survey
         )
     return 0
+
+# Finished
+def assign_surveys(request):
+    company = is_company(request.user)
+    if request.user.is_authenticated and company is not None:
+        if request.method == 'POST':
+            surveys = company.surveys.order_by('-id')[:2]
+            for survey in surveys:
+                employees = company.employees.all()
+                for employee in employees:
+                    if not employee.answer_sheets.filter(survey=survey).exists():
+                        info_log = employee.information_logs.last()
+                        AnswerSheet.objects.create(survey=survey, employee=employee,
+                            information_log=info_log
+                        )
+            messages.success(request,
+                "Los empleados faltantes se han asignado a las encuestas activas."
+            )
+            return redirect('survey:surveys_view')
+    return redirect(_404(request, 'Page not found', '404.html'))
 
 # Finished
 def update_survey(request, survey_id):
@@ -204,10 +225,10 @@ def grade_guide_I(request, survey, answer_sheet):
                     sec_III += 1
                 else:
                     sec_IV += 1
-                content = "Yes"
+                content = "Si"
                 value = 1
             else:
-                content = "Yes"
+                content = "Si"
                 value = 1
             Answer.objects.create(
               answer_sheet=answer_sheet, question=question, 

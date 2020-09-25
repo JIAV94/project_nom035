@@ -372,6 +372,25 @@ def is_employee(user):
         return None
 
 # Finished
+def update_password(request):
+    if request.method == 'POST':
+        pwd = request.POST.get('password', "")
+        pwd_conf = request.POST.get('password_confirmation', "")
+        if pwd != "":
+            if pwd != pwd_conf:
+                messages.error(request, 'Las contraseñas no coinciden')
+            else:
+                valid_pwd = password_validation(pwd)
+                if valid_pwd == 0:
+                    request.user.set_password(pwd)
+                    request.user.save()
+                    login(request, request.user)
+                    messages.success(request, "Su contraseña fue actualizada con exito!")
+                else:
+                    messages.error(request, valid_pwd)
+    return redirect('index_view')
+
+# Finished
 def _404(request, exception, template_name="404.html"):
     response = render_to_response(template_name)
     response.status_code = 404

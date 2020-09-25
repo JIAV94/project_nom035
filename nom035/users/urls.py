@@ -14,4 +14,5 @@ urlpatterns = [
     path('employees/<int:employee_id>', employee_details_view, 
         name='employee_details_view'),
     path('policy/', policy_view, name='policy_view'),
+    path('update_password/', update_password, name='update_password'),
 ]

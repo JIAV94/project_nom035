@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
 <div class="container-fluid">
   {% if user.is_admin %}
@@ -8,5 +9,7 @@
   {% elif employee %}
   {% include 'users/employee/employee_index.html' %}
   {% endif %}
+
+  {% include 'users/_update_password_modal.html' %}
 </div>
 {% endblock %}

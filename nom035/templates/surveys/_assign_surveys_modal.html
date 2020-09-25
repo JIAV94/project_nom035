@@ -1,0 +1,25 @@
+<div class="modal fade" id="assignSurveysModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Asignar Encuesta(s)</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <p>
+            ¿Desea asignar las encuestas activas a los nuevos empleados?
+          </p>
+        </div>
+        <form id="assignSurveys" action="{% url 'survey:assign_surveys' %}" method="POST"
+          onsubmit="assignSurveysButton.disabled = true; return true;">
+          {% csrf_token %}
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" name="assignSurveysButton">Asignar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
