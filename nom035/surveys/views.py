@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.http import JsonResponse
 from users.views import is_company, is_employee, _404
-from .models import Survey, Section, Question, Answer, AnswerSheet
+from .models import Survey, Section, Question, Answer, AnswerSheet, Grade
 
 # Finished
 def surveys_view(request):

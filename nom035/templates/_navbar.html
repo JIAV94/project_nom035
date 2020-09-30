@@ -16,7 +16,8 @@
   <div class="collapse navbar-collapse justify-content-between" id="navbarNavAltMarkup">
     <ul class="navbar-nav mr-auto">
       <li>
-        <a class="nav-link {% if request.path == index_url %} active {% endif %}" href="{% url 'index_view'%}">Home</a>
+        <a class="nav-link {% if request.path == index_url %} active {% endif %}"
+          href="{% url 'index_view'%}">Inicio</a>
       </li>
       {% if user.company %}
       <li>
