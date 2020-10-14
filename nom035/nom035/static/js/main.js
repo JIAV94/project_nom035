@@ -170,7 +170,7 @@ $(document).ready(function () {
       },
     });
   }
-  else {
+  else if (document.getElementById("guide_I_chart")) {
     const ctx = document.getElementById("guide_I_chart");
     const guide_I_chart = new Chart(ctx, {
       type: 'pie',

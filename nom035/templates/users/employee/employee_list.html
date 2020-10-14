@@ -11,100 +11,118 @@
   <div class="text-center">
     <h2>Empleados</h2>
   </div>
-  <button type="button" class="btn btn-outline-success rounded-pill m-3" data-toggle="modal"
-    data-target="#registerEmployeeModal" data-whatever="@mdo">
-    Registrar Empleado
-    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd"
-        d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
-    </svg>
-  </button>
-  <table class="table table-hover">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Nombre</th>
-        <th scope="col">
-          <div class="text-center">
-            Guía I
-          </div>
-        </th>
-        <th scope="col">
-          <div class="text-center">
-            Guía II / III
-          </div>
-        </th>
-        <th scope="col">
-          <div class="text-center">
-            Acción
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for employee, guideI, guideII in employees_data %}
-      <tr>
-        <th>
-          <a class="btn btn-block text-left" href="{% url 'user:employee_details_view' employee.id %}">
-            {{ employee.user.first_name }} {{ employee.user.last_name }}</a>
-        </th>
-        <td class="align-middle">
-          <div class="text-center">
-            {% if guideI == "unanswered" %}
-            <span class="badge text-body bg-light badge-pill border">Sin resolver</span>
-            {% elif guideI == "Requiere atención clínica" %}
-            <span class="badge text-white badge-pill" style="background-color:#E84258;">{{guideI}}</span>
-            {% else %}
-            <span class="badge text-white badge-pill" style="background-color:#58A1D9;">{{guideI}}</span>
-            {% endif %}
-          </div>
-        </td>
-        <td class="align-middle">
-          <div class="text-center">
-            {% if guideII == "unanswered" %}
-            <span class="badge text-body bg-light badge-pill border">Sin resolver</span>
-            {% elif guideII == "Muy alto" %}
-            <span class="badge text-white badge-pill" style="background-color:#E84258;">{{guideII}}</span>
-            {% elif guideII == "Alto" %}
-            <span class="badge text-white badge-pill" style="background-color:#FD8060;">{{guideII}}</span>
-            {% elif guideII == "Medio" %}
-            <span class="badge text-dark badge-pill" style="background-color:#FEE191;">{{guideII}}</span>
-            {% elif guideII == "Bajo" %}
-            <span class="badge text-white badge-pill" style="background-color:#B0D8A4;">{{guideII}}</span>
-            {% else %}
-            <span class="badge text-white badge-pill" style="background-color:#58A1D9;">{{guideII}}</span>
-            {% endif %}
-          </div>
-        </td>
-        <td class="align-middle">
-          <div class="text-center">
-            <button type="button" class="btn btn-outline-primary rounded-circle ed-emp" data-toggle="modal"
-              data-target="#updateEmployeeModal" data-employee-id="{{employee.id}}">
-              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                <path fill-rule="evenodd"
-                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-              </svg>
-            </button>
-            <button type="button" class="btn btn-outline-danger rounded-circle ml-2 del-emp" data-toggle="modal"
-              data-target="#deleteEmployeeModal" data-employee-id="{{employee.id}}"
-              data-employee-name="{{employee.user.first_name}} {{employee.user.last_name}}">
-              <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
-                <path fill-rule="evenodd"
-                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
-              </svg>
-            </button>
-          </div>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="row mb-3">
+    <div class="col-12 col-md-8">
+      <button type="button" class="btn btn-outline-success rounded-pill m-3" data-toggle="modal"
+        data-target="#registerEmployeeModal" data-whatever="@mdo">
+        Registrar Empleado
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-plus-fill" fill="currentColor"
+          xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+            d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7.5-3a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z" />
+        </svg>
+      </button>
+    </div>
+    <div class="col-12 col-md-4">
+      <input id="employeeFilter" type="text" class="form-control mt-3" placeholder="buscar..."
+        onkeyup="employeeFilter()">
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">Sección</th>
+          <th scope="col">Puesto</th>
+          <th scope="col">
+            <div class="text-center">
+              Guía I
+            </div>
+          </th>
+          <th scope="col">
+            <div class="text-center">
+              Guía II / III
+            </div>
+          </th>
+          <th scope="col">
+            <div class="text-center">
+              Acción
+            </div>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for employee, guideI, guideII in employees_data %}
+        <tr>
+          <td>
+            <a class="btn btn-block text-left" href="{% url 'user:employee_details_view' employee.id %}">
+              {{ employee.user.first_name }} {{ employee.user.last_name }}</a>
+          </td>
+          <td>
+            {{ employee.information_logs.last.area }}
+          </td>
+          <td>
+            {{ employee.information_logs.last.position }}
+          </td>
+          <td class="align-middle">
+            <div class="text-center">
+              {% if guideI == "unanswered" %}
+              <span class="badge text-body bg-light badge-pill border">Sin resolver</span>
+              {% elif guideI == "Requiere atención clínica" %}
+              <span class="badge text-white badge-pill" style="background-color:#E84258;">{{guideI}}</span>
+              {% else %}
+              <span class="badge text-white badge-pill" style="background-color:#58A1D9;">{{guideI}}</span>
+              {% endif %}
+            </div>
+          </td>
+          <td class="align-middle">
+            <div class="text-center">
+              {% if guideII == "unanswered" %}
+              <span class="badge text-body bg-light badge-pill border">Sin resolver</span>
+              {% elif guideII == "Muy alto" %}
+              <span class="badge text-white badge-pill" style="background-color:#E84258;">{{guideII}}</span>
+              {% elif guideII == "Alto" %}
+              <span class="badge text-white badge-pill" style="background-color:#FD8060;">{{guideII}}</span>
+              {% elif guideII == "Medio" %}
+              <span class="badge text-dark badge-pill" style="background-color:#FEE191;">{{guideII}}</span>
+              {% elif guideII == "Bajo" %}
+              <span class="badge text-white badge-pill" style="background-color:#B0D8A4;">{{guideII}}</span>
+              {% else %}
+              <span class="badge text-white badge-pill" style="background-color:#58A1D9;">{{guideII}}</span>
+              {% endif %}
+            </div>
+          </td>
+          <td class="align-middle">
+            <div class="text-center">
+              <button type="button" class="btn btn-outline-primary rounded-circle ed-emp" data-toggle="modal"
+                data-target="#updateEmployeeModal" data-employee-id="{{employee.id}}">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                  <path fill-rule="evenodd"
+                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                </svg>
+              </button>
+              <button type="button" class="btn btn-outline-danger rounded-circle ml-2 del-emp" data-toggle="modal"
+                data-target="#deleteEmployeeModal" data-employee-id="{{employee.id}}"
+                data-employee-name="{{employee.user.first_name}} {{employee.user.last_name}}">
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash" fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                  <path fill-rule="evenodd"
+                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                </svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 </div>
 
 
@@ -112,4 +130,22 @@
 {% include './_update_modal.html' %}
 {% include './_delete_modal.html' %}
 
+<script>
+  // Filter employee list
+  function employeeFilter() {
+    var input, filter, tbody, tr, i, txtValue;
+    input = document.getElementById("employeeFilter");
+    filter = input.value.toUpperCase();
+    tbody = document.getElementsByTagName("TBODY")[0];
+    tr = tbody.getElementsByTagName('TR');
+    for (i = 0; i < tr.length; i++) {
+      txtValue = tr[i].innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].setAttribute('class', '');
+      } else {
+        tr[i].setAttribute('class', 'd-none');
+      }
+    }
+  }
+</script>
 {% endblock %}
