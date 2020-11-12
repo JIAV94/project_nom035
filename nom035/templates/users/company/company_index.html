@@ -35,13 +35,17 @@
 <!-- Lista Guia I -->
 <div class="container">
   <div class="card text-center">
-    <div class="card-header">
-      Requieren atención clínica:
+    <div class="card-header bg-danger text-white">
+      <h4>Requieren atención clínica:</h4>
     </div>
     <div class="card-body">
       {% for answer_sheet in require_clinical_attention %}
-      {{answer_sheet.employee.user.first_name}} {{answer_sheet.employee.user.last_name}}
-      ({{answer_sheet.employee.user.username}})
+      <div class="row">
+        <div class="col text-monospace">
+          <h5>{{answer_sheet.employee.user.first_name}} {{answer_sheet.employee.user.last_name}}
+            ({{answer_sheet.employee.user.username}})</h5>
+        </div>
+      </div>
       {% endfor %}
     </div>
   </div>
