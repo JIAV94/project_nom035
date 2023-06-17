@@ -1,6 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
 
 
 class Company(models.Model):
@@ -26,15 +26,17 @@ class Employee(models.Model):
     @property
     def age(self):
         import datetime
-        return int((datetime.date.today() - self.birthdate).days / 365.25  )
+
+        return int((datetime.date.today() - self.birthdate).days / 365.25)
 
     def __str__(self):
-        return f'{self.user.first_name} {self.user.last_name}'
+        return f"{self.user.first_name} {self.user.last_name}"
 
 
 class InformationLog(models.Model):
     employee = models.ForeignKey(
-        'Employee', on_delete=models.CASCADE, related_name='information_logs')
+        "Employee", on_delete=models.CASCADE, related_name="information_logs"
+    )
     civil_status = models.IntegerField()
     educational_level = models.IntegerField()
     position = models.CharField(max_length=100)
