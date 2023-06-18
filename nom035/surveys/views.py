@@ -4,6 +4,7 @@ from wsgiref.util import FileWrapper
 
 import pandas as pd
 from django.contrib import messages
+# from django.core.files.temp import NamedTemporaryFile
 from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from users.views import _404, is_company, is_employee
@@ -509,22 +510,27 @@ def text_options(value, nulo, bajo, medio, alto):
 
 def download_surveys(request, survey_id):
     company = is_company(request.user)
-    if request.user.is_authenticated and company is not None:
-        survey = get_object_or_404(Survey, id=survey_id)
-        sheets = AnswerSheet.objects.filter(survey=survey)
-    data = {}
-    for sheet in sheets:
-        data[sheet.employee] = {}
-        for answer in sheet.answers.all():
-            data[sheet.employee][answer.question.content] = answer.content
-    df = pd.DataFrame(data)
-    filename = "_".join(survey.title.split("\\")[0].split()) + ".csv"
-    df.to_csv(filename)
-    chunk_size = 8192
-    response = StreamingHttpResponse(
-        FileWrapper(open(filename, "rb"), chunk_size),
-        content_type=mimetypes.guess_type("test.txt")[0]
-    )
-    response["Content-Length"] = os.path.getsize(filename)
-    response["Content-Disposition"] = "Attachment;filename=%s" % filename
-    return response
+    try:
+        if request.user.is_authenticated and company is not None:
+            survey = company.surveys.get(id=survey_id)
+            sheets = AnswerSheet.objects.filter(survey=survey)
+        data = {}
+        for sheet in sheets:
+            data[sheet.employee] = {}
+            for answer in sheet.answers.all():
+                data[sheet.employee][answer.question.content] = answer.content
+        df = pd.DataFrame(data)
+        filename = f"Nom035_Guia_{survey.guide_number}.csv"
+        # To use temporary files uncomment next line and replace filename to filename.name whenever its used
+        # filename = NamedTemporaryFile(suffix='.csv')
+        df.to_csv(filename)
+        chunk_size = 8192
+        response = StreamingHttpResponse(
+            FileWrapper(open(filename, "rb"), chunk_size),
+            content_type=mimetypes.guess_type(filename)[0]
+        )
+        response["Content-Length"] = os.path.getsize(filename)
+        response["Content-Disposition"] = f"Attachment;filename={filename}"
+        return response
+    except Survey.DoesNotExist:
+        return redirect(_404(request, 'Page not found', '404.html'))
