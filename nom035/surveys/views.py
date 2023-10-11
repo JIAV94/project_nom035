@@ -4,6 +4,7 @@ from wsgiref.util import FileWrapper
 
 import pandas as pd
 from django.contrib import messages
+
 # from django.core.files.temp import NamedTemporaryFile
 from django.http import JsonResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -15,12 +16,12 @@ from .models import Answer, AnswerSheet, Grade, Question, Section, Survey
 def surveys_view(request):
     company = is_company(request.user)
     if request.user.is_authenticated and is_company(request.user) is not None:
-        surveys = company.surveys.order_by('-id')
+        surveys = company.surveys.order_by("-id")
         context = {
-            'surveys': surveys,
+            "surveys": surveys,
         }
-        return render(request, 'surveys/survey_list.html', context)
-    return redirect(_404(request, 'Page not found', '404.html'))
+        return render(request, "surveys/survey_list.html", context)
+    return redirect(_404(request, "Page not found", "404.html"))
 
 
 def survey_details_view(request, survey_id):
@@ -32,20 +33,20 @@ def survey_details_view(request, survey_id):
             answered = sheets.exclude(final_answer="unanswered")
             unanswered = sheets.filter(final_answer="unanswered")
             context = {
-                'survey': survey,
-                'answered': answered,
-                'unanswered': unanswered,
+                "survey": survey,
+                "answered": answered,
+                "unanswered": unanswered,
             }
-            return render(request, 'surveys/survey_details.html', context)
+            return render(request, "surveys/survey_details.html", context)
     except Survey.DoesNotExist:
-        return redirect(_404(request, 'Page not found', '404.html'))
+        return redirect(_404(request, "Page not found", "404.html"))
 
 
 def create_survey(request):
     user = request.user
     company = is_company(user)
     if request.user.is_authenticated and company is not None:
-        if request.method == 'POST':
+        if request.method == "POST":
             responsible = request.POST["responsible"]
             main_activities = request.POST["main_activities"]
             responsible_id = request.POST["responsible_id"]
@@ -55,37 +56,42 @@ def create_survey(request):
             company_size = employees.count()
             filenames = []
             if company_size > 50:
-                filenames.append('./nom035/static/surveys/guide_III.txt')
+                filenames.append("./nom035/static/surveys/guide_III.txt")
             elif company_size > 15:
-                filenames.append('./nom035/static/surveys/guide_II.txt')
-            filenames.append('./nom035/static/surveys/guide_I.txt')
+                filenames.append("./nom035/static/surveys/guide_II.txt")
+            filenames.append("./nom035/static/surveys/guide_I.txt")
             for filename in filenames:
                 survey = None
                 section = None
-                with open(filename, encoding='utf-8') as survey_guide:
+                with open(filename, encoding="utf-8") as survey_guide:
                     for line in survey_guide.readlines()[1:]:
-                        data = line.split('|')
+                        data = line.split("|")
                         if data[0].isdigit():
                             survey = Survey.objects.create(
-                              company=company, main_activities=main_activities,
-                              guide_number=data[0], responsible=responsible,
-                              responsible_id=responsible_id, title=data[2].strip()
+                                company=company,
+                                main_activities=main_activities,
+                                guide_number=data[0],
+                                responsible=responsible,
+                                responsible_id=responsible_id,
+                                title=data[2].strip(),
                             )
                         elif data[0] == "Section":
                             section = Section.objects.create(
-                              survey=survey, content=data[2], section_type=data[1]
+                                survey=survey, content=data[2], section_type=data[1]
                             )
                         else:
                             Question.objects.create(
-                              section=section, number=data[1], content=data[2],
-                              inverted=data[3]
+                                section=section,
+                                number=data[1],
+                                content=data[2],
+                                inverted=data[3],
                             )
                     link_survey(survey, employees)
-            return redirect('survey:surveys_view')
+            return redirect("survey:surveys_view")
         else:
-            return redirect('survey:surveys_view')
+            return redirect("survey:surveys_view")
     else:
-        return redirect(_404(request, 'Page not found', '404.html'))
+        return redirect(_404(request, "Page not found", "404.html"))
 
 
 def link_survey(survey, employees):
@@ -100,39 +106,37 @@ def link_survey(survey, employees):
 def assign_surveys(request):
     company = is_company(request.user)
     if request.user.is_authenticated and company is not None:
-        if request.method == 'POST':
-            surveys = reversed(company.surveys.order_by('-id')[:2])
+        if request.method == "POST":
+            surveys = reversed(company.surveys.order_by("-id")[:2])
             for survey in surveys:
                 employees = company.employees.all()
                 for employee in employees:
                     if not employee.answer_sheets.filter(survey=survey).exists():
                         info_log = employee.information_logs.last()
                         AnswerSheet.objects.create(
-                            survey=survey,
-                            employee=employee,
-                            information_log=info_log
+                            survey=survey, employee=employee, information_log=info_log
                         )
             messages.success(
                 request,
-                "Los empleados faltantes se han asignado a las encuestas activas."
+                "Los empleados faltantes se han asignado a las encuestas activas.",
             )
-            return redirect('survey:surveys_view')
-    return redirect(_404(request, 'Page not found', '404.html'))
+            return redirect("survey:surveys_view")
+    return redirect(_404(request, "Page not found", "404.html"))
 
 
 def update_survey(request, survey_id):
     company = is_company(request.user)
     if request.user.is_authenticated and company is not None:
-        if request.method == 'POST':
+        if request.method == "POST":
             survey = get_object_or_404(Survey, id=survey_id)
             if survey.company == company:
                 responsible = request.POST["responsible"]
                 responsible_id = request.POST["responsible_id"]
                 main_activities = request.POST["main_activities"]
-                conclusions = request.POST.get('conclusions', "")
-                method = request.POST.get('method', "")
-                objective = request.POST.get('objective', "")
-                recommendations = request.POST.get('recommendations', "")
+                conclusions = request.POST.get("conclusions", "")
+                method = request.POST.get("method", "")
+                objective = request.POST.get("objective", "")
+                recommendations = request.POST.get("recommendations", "")
                 survey.responsible = responsible
                 survey.responsible_id = responsible_id
                 survey.main_activities = main_activities
@@ -141,9 +145,9 @@ def update_survey(request, survey_id):
                 survey.objective = objective
                 survey.recommendations = recommendations
                 survey.save()
-                return redirect('survey:surveys_view')
-            return redirect(_404(request, 'Page not found', '404.html'))
-    return redirect('index_view')
+                return redirect("survey:surveys_view")
+            return redirect(_404(request, "Page not found", "404.html"))
+    return redirect("index_view")
 
 
 def load_survey_data(request, survey_id):
@@ -151,18 +155,20 @@ def load_survey_data(request, survey_id):
     if request.user.is_authenticated and company is not None:
         survey = get_object_or_404(Survey, id=survey_id)
         if survey.company == company:
-            survey = [{
-              "responsible":survey.responsible, 
-              "responsible_id":survey.responsible_id,
-              "conclusions":survey.conclusions,
-              "method":survey.method,
-              "objective":survey.objective,
-              "recommendations":survey.recommendations,
-              "main_activities":survey.main_activities
-            }]
-            return JsonResponse(survey, content_type='application/json', safe=False)
-        return redirect(_404(request, 'Page not found', '404.html'))
-    return redirect('index_view')
+            survey = [
+                {
+                    "responsible": survey.responsible,
+                    "responsible_id": survey.responsible_id,
+                    "conclusions": survey.conclusions,
+                    "method": survey.method,
+                    "objective": survey.objective,
+                    "recommendations": survey.recommendations,
+                    "main_activities": survey.main_activities,
+                }
+            ]
+            return JsonResponse(survey, content_type="application/json", safe=False)
+        return redirect(_404(request, "Page not found", "404.html"))
+    return redirect("index_view")
 
 
 def delete_survey(request, survey_id):
@@ -172,21 +178,21 @@ def delete_survey(request, survey_id):
             survey = company.surveys.get(id=survey_id)
             if survey.company == company:
                 survey.delete()
-                return redirect('survey:surveys_view')
+                return redirect("survey:surveys_view")
     except Survey.DoesNotExist:
-        return redirect(_404(request, 'Page not found', '404.html'))
+        return redirect(_404(request, "Page not found", "404.html"))
 
 
 def respond_survey(request, survey_id):
     employee = is_employee(request.user)
     if request.user.is_authenticated and employee is not None:
-        if request.method == 'POST':
+        if request.method == "POST":
             info_log = employee.information_logs.last()
             survey = Survey.objects.get(id=survey_id)
             answer_sheet = employee.answer_sheets.get(survey=survey)
             if survey.guide_number == 1:
                 grade_guide_I(request, survey, answer_sheet)
-                return redirect('index_view')
+                return redirect("index_view")
             elif survey.guide_number == 2:
                 dom, cat, final_ans = grade_guide_II(request, survey, answer_sheet)
                 dom, cat, final_ans = value_to_text_II(dom, cat, final_ans)
@@ -212,15 +218,13 @@ def respond_survey(request, survey_id):
                 work_relationship=dom[6],
                 violence=dom[7],
                 performance_recognition=dom[8],
-                sense_belonging_instability=dom[9]
+                sense_belonging_instability=dom[9],
             )
         else:
             survey = get_object_or_404(Survey, id=survey_id)
-            context = {
-                'survey': survey
-            }
-            return render(request, 'surveys/survey_form.html', context)
-    return redirect('index_view')
+            context = {"survey": survey}
+            return render(request, "surveys/survey_form.html", context)
+    return redirect("index_view")
 
 
 def grade_guide_I(request, survey, answer_sheet):
@@ -231,14 +235,14 @@ def grade_guide_I(request, survey, answer_sheet):
         for question in section.questions.all():
             question_str = str(question.id)
             answer = request.POST[question_str]
-            if answer == '0':
+            if answer == "0":
                 if question.number == 1:
                     answer_sheet.save()
                     Answer.objects.create(
                         answer_sheet=answer_sheet,
                         question=question,
                         value=0,
-                        content="No"
+                        content="No",
                     )
                     return
                 content = "No"
@@ -259,7 +263,7 @@ def grade_guide_I(request, survey, answer_sheet):
                 answer_sheet=answer_sheet,
                 question=question,
                 value=value,
-                content=content
+                content=content,
             )
     if sec_III > 2 or sec_IV > 1:
         answer_sheet.final_answer = "Requiere atención clínica"
@@ -280,21 +284,14 @@ def grade_guide_II(request, survey, answer_sheet):
     category = [0, 0, 0, 0, 0]
     domain = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     final_answer = 0
-    val_str = [
-        "Siempre",
-        "Casi siempre",
-        "Algunas veces",
-        "Casi nunca",
-        "Nunca"
-    ]
-    inv_val_str = ["Nunca", "Casi nunca", "Algunas veces",
-                   "Casi siempre", "Siempre"]
+    val_str = ["Siempre", "Casi siempre", "Algunas veces", "Casi nunca", "Nunca"]
+    inv_val_str = ["Nunca", "Casi nunca", "Algunas veces", "Casi siempre", "Siempre"]
     # Get the sum of all the answers in each domain
     for section in survey.sections.all():
         for question in section.questions.all():
             question_str = str(question.id)
             try:
-                value = int(request.POST[question_str])
+                value = int(request.POST.get(question_str, 0))
             except ValueError:
                 continue
             if question.number < 0:
@@ -327,7 +324,7 @@ def grade_guide_II(request, survey, answer_sheet):
                 answer_sheet=answer_sheet,
                 question=question,
                 value=value,
-                content=content
+                content=content,
             )
     # Work environment
     category[0] = domain[0]
@@ -357,26 +354,14 @@ def grade_guide_III(request, survey, answer_sheet):
     category = [0, 0, 0, 0, 0]
     domain = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     final_answer = 0
-    val_str = [
-        "Siempre",
-        "Casi siempre",
-        "Algunas veces",
-        "Casi nunca",
-        "Nunca"
-    ]
-    inv_val_str = [
-        "Nunca",
-        "Casi nunca",
-        "Algunas veces",
-        "Casi siempre",
-        "Siempre"
-    ]
+    val_str = ["Siempre", "Casi siempre", "Algunas veces", "Casi nunca", "Nunca"]
+    inv_val_str = ["Nunca", "Casi nunca", "Algunas veces", "Casi siempre", "Siempre"]
     # Get the sum of all the answers in each domain
     for section in survey.sections.all():
         for question in section.questions.all():
             question_str = str(question.id)
             try:
-                value = int(request.POST[question_str])
+                value = int(request.POST.get(question_str, 0))
             except KeyError:
                 continue
             if question.number < 0:
@@ -409,7 +394,7 @@ def grade_guide_III(request, survey, answer_sheet):
                 answer_sheet=answer_sheet,
                 question=question,
                 value=value,
-                content=content
+                content=content,
             )
     # Work environment
     category[0] = domain[0]
@@ -457,7 +442,7 @@ def value_to_text_II(domain, category, final_answer):
     return domain, category, final_answer
 
 
-def value_to_text_III(domain, category, final_answer):      
+def value_to_text_III(domain, category, final_answer):
     for i in range(len(domain)):
         if i == 0:
             domain[i] = text_options(domain[i], 5, 9, 11, 14)
@@ -527,10 +512,10 @@ def download_surveys(request, survey_id):
         chunk_size = 8192
         response = StreamingHttpResponse(
             FileWrapper(open(filename, "rb"), chunk_size),
-            content_type=mimetypes.guess_type(filename)[0]
+            content_type=mimetypes.guess_type(filename)[0],
         )
         response["Content-Length"] = os.path.getsize(filename)
         response["Content-Disposition"] = f"Attachment;filename={filename}"
         return response
     except Survey.DoesNotExist:
-        return redirect(_404(request, 'Page not found', '404.html'))
+        return redirect(_404(request, "Page not found", "404.html"))
