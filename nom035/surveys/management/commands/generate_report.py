@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from surveys.models import Survey, AnswerSheet, Grade
+import json
 
 
 class Command(BaseCommand):
@@ -91,5 +92,8 @@ class Command(BaseCommand):
         for k, v in report.items():
             for k1, v1 in v.items():
                 for k2, v2 in v1.items():
-                    report[k][k1][k2] = (v2 / total_answer_sheets) * 100
+                    report[k][k1][k2] = round((v2 / total_answer_sheets) * 100, 2)
+
         print(report)
+        with open(f"/tmp/report_{survey.guide_number}.json", "w") as file:
+            json.dump(report, file)
