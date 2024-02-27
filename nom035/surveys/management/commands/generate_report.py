@@ -13,7 +13,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         survey = Survey.objects.get(pk=options["survey_pk"])
         answer_sheets = AnswerSheet.objects.filter(survey=survey)
-        total_answer_sheets = answer_sheets.count()
+        completed_surveys = 0
 
         def get_initial_grades():
             return {
@@ -49,6 +49,7 @@ class Command(BaseCommand):
             grades = Grade.objects.filter(answer_sheet=answer_sheet.pk)
             for grade in grades:
                 if grade:
+                    completed_surveys += 1
                     report["categoria"]["Ambiente de trabajo"][
                         grade.work_environment
                     ] += 1
@@ -92,7 +93,7 @@ class Command(BaseCommand):
         for k, v in report.items():
             for k1, v1 in v.items():
                 for k2, v2 in v1.items():
-                    report[k][k1][k2] = round((v2 / total_answer_sheets) * 100, 2)
+                    report[k][k1][k2] = round((v2 / completed_surveys) * 100, 2)
 
         print(report)
         with open(f"/tmp/report_{survey.guide_number}.json", "w") as file:
