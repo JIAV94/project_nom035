@@ -1,3 +1,4 @@
+import json
 import mimetypes
 import os
 from wsgiref.util import FileWrapper
@@ -15,13 +16,117 @@ from .models import Answer, AnswerSheet, Grade, Question, Section, Survey
 
 def surveys_view(request):
     company = is_company(request.user)
-    if request.user.is_authenticated and is_company(request.user) is not None:
+    if request.user.is_authenticated and company is not None:
         surveys = company.surveys.order_by("-id")
         context = {
             "surveys": surveys,
         }
         return render(request, "surveys/survey_list.html", context)
     return redirect(_404(request, "Page not found", "404.html"))
+
+
+def survey_report_view(request, survey_id):
+    try:
+        company = is_company(request.user)
+        if request.user.is_authenticated and company is not None:
+            survey = get_object_or_404(company.surveys, id=survey_id)
+            sheets = AnswerSheet.objects.filter(survey=survey).exclude(
+                final_answer="unanswered"
+            )
+            answered_count = sheets.count()
+            value_map = {"Nulo": 0, "Bajo": 1, "Medio": 2, "Alto": 3, "Muy alto": 4}
+            titles_mapping = {
+                "work_environment": "Ambiente de trabajo",
+                "activity_factor": "Factores propios de la actividad",
+                "time_organization": "Organización del tiempo de trabajo",
+                "leadership_relationship": "Liderazgo y relaciones en el trabajo",
+                "organizational_environment": "Entorno organizacional",
+                "work_environment_conditions": "Condiciones en el ambiente de trabajo",
+                "working_load": "Carga de trabajo",
+                "work_lack_control": "Falta de control sobre el trabajo",
+                "working_day": "Jornada de trabajo",
+                "family_work_relationship": "Interferencia en la relación trabajo y familia",
+                "leadership": "Liderazgo",
+                "work_relationship": "Relaciones en el trabajo",
+                "violence": "Violencia",
+                "performance_recognition": "Reconocimiento del desempeño",
+                "sense_belonging_instability": "Insuficiente sentido de pertenencia e inestabilidad",
+            }
+
+            def init_report_structure(guide_number):
+                report_structure = {
+                    "category": {
+                        "work_environment": [0] * 5,
+                        "activity_factor": [0] * 5,
+                        "time_organization": [0] * 5,
+                        "leadership_relationship": [0] * 5,
+                    },
+                    "domain": {
+                        "work_environment_conditions": [0] * 5,
+                        "working_load": [0] * 5,
+                        "work_lack_control": [0] * 5,
+                        "working_day": [0] * 5,
+                        "family_work_relationship": [0] * 5,
+                        "leadership": [0] * 5,
+                        "work_relationship": [0] * 5,
+                        "violence": [0] * 5,
+                    },
+                }
+                if guide_number == 3:
+                    report_structure["category"]["organizational_environment"] = [0] * 5
+                    report_structure["domain"].update(
+                        {
+                            "performance_recognition": [0] * 5,
+                            "sense_belonging_instability": [0] * 5,
+                        }
+                    )
+                return report_structure
+
+            report = init_report_structure(survey.guide_number)
+            for answer_sheet in sheets:
+                grades = Grade.objects.filter(answer_sheet=answer_sheet.pk)
+                for grade in grades:
+                    for key in report:
+                        for attribute in report[key]:
+                            if hasattr(grade, attribute):
+                                value = getattr(grade, attribute)
+                                report[key][attribute][value_map[value]] += 1
+
+            # Calculate percentages
+            for category in report:
+                for key, values in report[category].items():
+                    report[category][key] = [
+                        round((value / answered_count) * 100, 2) for value in values
+                    ]
+
+            report_for_template = []
+            for category, values in report["category"].items():
+                report_for_template.append(
+                    {
+                        "type": "category",
+                        "name": titles_mapping[category],
+                        "data": values,
+                        "id": f"report_II_III_chart_{category}",
+                    }
+                )
+
+            for domain, values in report["domain"].items():
+                report_for_template.append(
+                    {
+                        "type": "domain",
+                        "name": titles_mapping[domain],
+                        "data": values,
+                        "id": f"report_II_III_chart_{domain}",
+                    }
+                )
+
+            context = {
+                "survey": survey,
+                "report": report_for_template,
+            }
+            return render(request, "surveys/survey_report.html", context)
+    except Survey.DoesNotExist:
+        return redirect(_404(request, "Page not found", "404.html"))
 
 
 def survey_details_view(request, survey_id):

@@ -196,4 +196,39 @@ $(document).ready(function () {
       },
     });
   }
+
+  // Report graphs
+  // Select elements whose ID starts with 'report_II_III_chart_'
+  const elements = document.querySelectorAll('[id^="report_II_III_chart_"]');
+
+  // Common settings for charts
+  const backgroundColors = ['#58A1D9', '#B0D8A4', '#FEE191', '#FD8060', '#E84258'];
+  const hoverBackgroundColors = ['#2e59d9', '#17a673', '#ffe42e', '#F24F09', '#E42024'];
+  const hoverBorderColor = "rgba(234, 236, 244, 1)";
+  const dataLabels = ["Nulo", "Bajo", "Medio", "Alto", "Muy Alto"];
+  const chartType = 'polarArea';
+
+  elements.forEach(ctx => {
+    // Assuming the data-* attributes are similar for all elements, adapt as necessary
+    const dataValues = ['graphNulo', 'graphBajo', 'graphMedio', 'graphAlto', 'graphMuyAlto'];
+    const data = dataValues.map(value => ctx.dataset[value]);
+
+    new Chart(ctx, {
+      type: chartType,
+      data: {
+        datasets: [{
+          data,
+          backgroundColor: backgroundColors,
+          hoverBackgroundColor: hoverBackgroundColors,
+          hoverBorderColor,
+        }],
+        labels: dataLabels,
+      },
+      options: {
+        maintainAspectRatio: false,
+        legend: { display: true },
+        cutoutPercentage: 30,
+      },
+    });
+  });
 });

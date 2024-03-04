@@ -1,0 +1,39 @@
+<div class="col-12">
+    <h3>Categorias</h3>
+</div>
+{% for item in report %}
+{% if item.type == 'category' %}
+<div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    <div class="card mb-4 shadow-lg">
+        <div class="card-header d-flex justify-content-center">
+            <h5>{{ item.name }}</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="{{ item.id }}" height="400%" data-graph-nulo="{{ item.data.0 }}"
+                data-graph-bajo="{{ item.data.1 }}" data-graph-medio="{{ item.data.2 }}"
+                data-graph-alto="{{ item.data.3 }}" data-graph-muy-alto="{{ item.data.4 }}"></canvas>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
+
+<div class="col-12">
+    <h3>Dominios</h3>
+</div>
+{% for item in report %}
+{% if item.type == 'domain' %}
+<div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+    <div class="card mb-4 shadow-lg">
+        <div class="card-header d-flex justify-content-center">
+            <h5>{{ item.name }}</h5>
+        </div>
+        <div class="card-body">
+            <canvas id="{{ item.id }}" height="400%" data-graph-nulo="{{ item.data.0 }}"
+                data-graph-bajo="{{ item.data.1 }}" data-graph-medio="{{ item.data.2 }}"
+                data-graph-alto="{{ item.data.3 }}" data-graph-muy-alto="{{ item.data.4 }}"></canvas>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endfor %}
