@@ -1,6 +1,9 @@
 <div class="col-12">
-    <h3>Categorias</h3>
+    <br><br>
+    <h2>Categorias</h2>
+    <br>
 </div>
+
 {% for item in report %}
 {% if item.type == 'category' %}
 <div class="col col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
@@ -17,9 +20,12 @@
 </div>
 {% endif %}
 {% endfor %}
+<br><br>
 
 <div class="col-12">
-    <h3>Dominios</h3>
+    <br><br>
+    <h2>Dominios</h2>
+    <br>
 </div>
 {% for item in report %}
 {% if item.type == 'domain' %}
