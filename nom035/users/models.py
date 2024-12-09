@@ -19,7 +19,7 @@ class Employee(models.Model):
     company = models.ForeignKey(
         "Company", on_delete=models.CASCADE, related_name="employees"
     )
-    sex = models.BooleanField()
+    sex = models.BooleanField(null=True)
     birthdate = models.DateField(default=timezone.now)
     policy = models.BooleanField(default=False)
 
@@ -37,14 +37,14 @@ class InformationLog(models.Model):
     employee = models.ForeignKey(
         "Employee", on_delete=models.CASCADE, related_name="information_logs"
     )
-    civil_status = models.IntegerField()
-    educational_level = models.IntegerField()
-    position = models.CharField(max_length=100)
-    area = models.CharField(max_length=70)
-    position_type = models.IntegerField()
-    contract_type = models.IntegerField()
-    personnel_type = models.IntegerField()
-    working_day_type = models.IntegerField()
-    shift_rotation = models.BooleanField(default=False)
-    current_position_time = models.IntegerField()
-    work_experience_time = models.IntegerField()
+    civil_status = models.IntegerField(null=True)
+    educational_level = models.IntegerField(null=True)
+    position = models.CharField(max_length=100, null=True)
+    area = models.CharField(max_length=70, null=True)
+    position_type = models.IntegerField(null=True)
+    contract_type = models.IntegerField(null=True)
+    personnel_type = models.IntegerField(null=True)
+    working_day_type = models.IntegerField(null=True)
+    shift_rotation = models.BooleanField(null=True)
+    current_position_time = models.IntegerField(null=True)
+    work_experience_time = models.IntegerField(null=True)
